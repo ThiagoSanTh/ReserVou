@@ -1,7 +1,6 @@
 from django.db import models
 
-# Create your models here.
-
+# Create your models here.   
 class Hotel (models.Model):
     nome = models.CharField(max_length = 100, null = False, blank = False)
     endereco = models.CharField(max_length = 150, null = False, blank = False)
@@ -20,7 +19,11 @@ class Quarto (models.Model):
     
     numero = models.CharField(max_length = 10, null = False, blank = False)
     hotel = models.ForeignKey(Hotel, on_delete = models.CASCADE, related_name = 'quarto')
-    tipo = models.CharField(max_length = 20, null = False, blank = False)
+    tipo = models.CharField(max_length = 20, null = False, blank = False,  choices = [
+        ('tradicional', 'Tradicional'),
+        ('premium', 'Premium'),
+        ('luxo', 'Luxo'),
+        ])
     preco_diaria = models.DecimalField(max_digits = 8, decimal_places = 2, null = False, blank = False)
     status = models.CharField(max_length = 20, choices = STATUS_ATUAL, default = 'Disponível')    
     

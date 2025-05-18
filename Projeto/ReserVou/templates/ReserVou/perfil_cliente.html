@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Perfil de {{ cliente.nome }}</title>
+</head>
+<body>
+    <h1>Perfil do Cliente</h1>
+
+    <p><strong>Nome:</strong> {{ cliente.nome }}</p>
+    <p><strong>Email:</strong> {{ cliente.email }}</p>
+    <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
+
+    <hr>
+
+    <h2>Histórico de Reservas</h2>
+
+    {% if reservas %}
+        <ul>
+            {% for reserva in reservas %}
+                <li>
+                    Hotel: {{ reserva.hotel.nome }} |
+                    Quarto: {{ reserva.quarto.numero }} |
+                    Entrada: {{ reserva.data_entrada }} |
+                    Saída: {{ reserva.data_saida }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Este cliente ainda não possui reservas.</p>
+    {% endif %}
+
+    <hr>
+
+    <a href="{% url 'listar_hoteis' %}?cliente_id={{ cliente.id }}">➕ Fazer Nova Reserva</a><br>
+    <a href="{% url 'home' %}">⬅ Voltar para lista de clientes</a>
+</body>
+</html>

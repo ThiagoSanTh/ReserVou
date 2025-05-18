@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from ReserVou import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.pagina_inicial, name='home'),
+    path('clientes/novo/', views.cadastrar_cliente, name='cadastrar_cliente'),
+    path('clientes/<int:id>/', views.perfil_cliente, name='perfil_cliente'),
+    path('hoteis/', views.listar_hoteis, name = 'listar_hoteis'),
 ]

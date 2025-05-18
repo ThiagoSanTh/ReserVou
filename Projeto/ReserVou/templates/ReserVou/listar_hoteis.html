@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotéis Disponíveis</title>
+</head>
+<body>
+    <h1>Lista de Hotéis</h1>
+
+    {% for hotel in hoteis %}
+        <div style="margin-bottom: 20px;">
+            <strong>{{ hotel.nome }}</strong><br>
+            Endereço: {{ hotel.endereco }}<br>
+            Quartos disponíveis: {{ hotel.qtd_quartos_disponiveis }}<br>
+
+            <a href="{% url 'listar_quartos' hotel.id %}?cliente_id={{ cliente_id }}">
+                Ver Quartos
+            </a>
+        </div>
+    {% empty %}
+        <p>Nenhum hotel cadastrado ainda.</p>
+    {% endfor %}
+
+    <a href="{% url 'home' %}">⬅ Voltar</a>
+</body>
+</html>

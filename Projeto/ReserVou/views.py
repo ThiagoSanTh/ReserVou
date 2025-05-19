@@ -7,7 +7,8 @@ from datetime import datetime
 # Create your views here.
 def pagina_inicial(request):
     clientes = Cliente.objects.all()
-    return render(request, 'ReserVou/pagina_inicial.html', {'clientes': clientes})
+    hoteis = Hotel.objects.all()
+    return render(request, 'ReserVou/pagina_inicial.html', {'clientes': clientes, 'hoteis': hoteis})
 
 def gerenciar_hoteis(request):
     hoteis = Hotel.objects.prefetch_related('quarto').all()  # Otimiza a busca dos quartos

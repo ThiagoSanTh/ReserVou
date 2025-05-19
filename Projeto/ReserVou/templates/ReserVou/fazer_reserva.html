@@ -1,26 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
+    <meta charset="UTF-8">
     <title>Resumo da Reserva</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Resumo da Reserva</h1>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <p><strong>Cliente:</strong> {{ cliente.nome }}</p>
-    <p><strong>Hotel:</strong> {{ hotel.nome }}</p>
-    <p><strong>Quarto:</strong> Número {{ quarto.numero }} - Tipo {{ quarto.tipo }}</p>
-    <p><strong>Período:</strong> {{ checkin }} até {{ checkout }}</p>
-    <p><strong>Total:</strong> R$ {{ total }}</p>
+    <div class="container">
+        <h1 class="page-header">Resumo da Reserva</h1>
 
-    <form action="{% url 'fazer_pagamento' %}" method="get">
-        <input type="hidden" name="cliente_id" value="{{ cliente.id }}">
-        <input type="hidden" name="quarto_id" value="{{ quarto.id }}">
-        <input type="hidden" name="checkin" value="{{ checkin }}">
-        <input type="hidden" name="checkout" value="{{ checkout }}">
-        <button type="submit">Ir para pagamento</button>
-    </form>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p><strong>Cliente:</strong> {{ cliente.nome }}</p>
+                <p><strong>Hotel:</strong> {{ hotel.nome }}</p>
+                <p><strong>Quarto:</strong> Número {{ quarto.numero }} - Tipo {{ quarto.tipo }}</p>
+                <p><strong>Período:</strong> {{ checkin }} até {{ checkout }}</p>
+                <p><strong>Total:</strong> R$ {{ total }}</p>
+            </div>
+        </div>
 
-    <br>
-    <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}">⬅ Voltar para hotéis</a>
+        <form action="{% url 'fazer_pagamento' %}" method="get">
+            <input type="hidden" name="cliente_id" value="{{ cliente.id }}">
+            <input type="hidden" name="quarto_id" value="{{ quarto.id }}">
+            <input type="hidden" name="checkin" value="{{ checkin }}">
+            <input type="hidden" name="checkout" value="{{ checkout }}">
+            <button type="submit" class="btn btn-success">Ir para pagamento</button>
+        </form>
+
+        <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}" class="btn btn-default" style="margin-top: 15px;">
+            ⬅ Voltar para hotéis
+        </a>
+    </div>
 </body>
 </html>

@@ -1,42 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
+    <meta charset="UTF-8">
     <title>Quartos - {{ hotel.nome }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Quartos disponíveis em {{ hotel.nome }}</h1>
-
-    <form method="get">
-        <input type="hidden" name="cliente_id" value="{{ cliente_id }}">
-        <label>Check-in:</label>
-        <input type="date" name="checkin" value="{{ checkin }}">
-        <label>Check-out:</label>
-        <input type="date" name="checkout" value="{{ checkout }}">
-        <button type="submit">Buscar</button>
-    </form>
-
-    {% if checkin and checkout %}
-        <h2>Resultados:</h2>
-        {% if quartos_disponiveis %}
-            <ul>
-                {% for quarto in quartos_disponiveis %}
-                    <li>
-                        Número: {{ quarto.numero }} -
-                        Tipo: {{ quarto.tipo }} -
-                        Preço: R$ {{ quarto.preco }}
-                        <br>
-                        <a href="{% url 'fazer_reserva' quarto.id %}?cliente_id={{ cliente_id }}&checkin={{ checkin }}&checkout={{ checkout }}">
-                            Reservar
-                        </a>
-                    </li>
-                {% endfor %}
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
             </ul>
-        {% else %}
-            <p>Nenhum quarto disponível para o período informado.</p>
-        {% endif %}
-    {% endif %}
+        </div>
+    </nav>
 
-    <br>
-    <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente_id }}">⬅ Voltar para hotéis</a>
+    <div class="container">
+        <h1 class="page-header">Quartos disponíveis em {{ hotel.nome }}</h1>
+
+        <form method="get" class="form-inline">
+            <input type="hidden" name="cliente_id" value="{{ cliente_id }}">
+            <div class="form-group">
+                <label for="checkin">Check-in:</label>
+                <input type="date" class="form-control" id="checkin" name="checkin" value="{{ checkin }}">
+            </div>
+            <div class="form-group">
+                <label for="checkout">Check-out:</label>
+                <input type="date" class="form-control" id="checkout" name="checkout" value="{{ checkout }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        {% if checkin and checkout %}
+            <h2>Resultados:</h2>
+            {% if quartos_disponiveis %}
+                <ul class="list-group">
+                    {% for quarto in quartos_disponiveis %}
+                        <li class="list-group-item">
+                            <strong>Número:</strong> {{ quarto.numero }} -
+                            <strong>Tipo:</strong> {{ quarto.tipo }} -
+                            <strong>Preço:</strong> R$ {{ quarto.preco }}
+                            <br>
+                            <a href="{% url 'fazer_reserva' quarto.id %}?cliente_id={{ cliente_id }}&checkin={{ checkin }}&checkout={{ checkout }}" class="btn btn-success btn-sm" style="margin-top: 5px;">
+                                Reservar
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Nenhum quarto disponível para o período informado.</p>
+            {% endif %}
+        {% endif %}
+
+        <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente_id }}" class="btn btn-default" style="margin-top: 15px;">
+            ⬅ Voltar para hotéis
+        </a>
+    </div>
 </body>
 </html>

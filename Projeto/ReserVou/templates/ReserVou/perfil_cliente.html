@@ -1,43 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
+    <meta charset="UTF-8">
     <title>Perfil de {{ cliente.nome }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Perfil do Cliente</h1>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <p><strong>Nome:</strong> {{ cliente.nome }}</p>
-    <p><strong>Email:</strong> {{ cliente.email }}</p>
-    <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
+    <div class="container">
+        <h1 class="page-header">Perfil do Cliente</h1>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p><strong>Nome:</strong> {{ cliente.nome }}</p>
+                <p><strong>Email:</strong> {{ cliente.email }}</p>
+                <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
+            </div>
+        </div>
 
-    <hr>
-
-    <h2>Histórico de Reservas</h2>
-
-    {% if reservas %}
-    <ul>
-        {% for reserva in reservas %}
-            <li>
-                Hotel: {{ reserva.hotel.nome }} |
-                Quarto: {{ reserva.quarto.numero }} |
-                Entrada: {{ reserva.check_in }} |
-                Saída: {{ reserva.check_out }} |
-                Status do pagamento: 
-                {% if reserva.pagamento %}
-                    {{ reserva.pagamento.status|capfirst }}
+        <h2>Histórico de Reservas</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {% if reservas %}
+                <ul class="list-group">
+                    {% for reserva in reservas %}
+                        <li class="list-group-item">
+                            <strong>Hotel:</strong> {{ reserva.hotel.nome }} |
+                            <strong>Quarto:</strong> {{ reserva.quarto.numero }} |
+                            <strong>Entrada:</strong> {{ reserva.check_in }} |
+                            <strong>Saída:</strong> {{ reserva.check_out }} |
+                            <strong>Status do pagamento:</strong>
+                            {% if reserva.pagamento %}
+                                {{ reserva.pagamento.status|capfirst }}
+                            {% else %}
+                                <span class="text-muted">Sem pagamento registrado</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
                 {% else %}
-                    Sem pagamento registrado
+                    <p class="text-muted">Este cliente ainda não possui reservas.</p>
                 {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>Este cliente ainda não possui reservas.</p>
-    {% endif %}
+            </div>
+        </div>
 
-    <hr>
-
-    <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}">➕ Fazer Nova Reserva</a><br>
-    <a href="{% url 'home' %}">⬅ Voltar para lista de clientes</a>
+        <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}" class="btn btn-success">
+            ➕ Fazer Nova Reserva
+        </a>
+        <a href="{% url 'home' %}" class="btn btn-default">
+            ⬅ Voltar para lista de clientes
+        </a>
+    </div>
 </body>
 </html>

@@ -1,25 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
+    <meta charset="UTF-8">
     <title>Hotéis Disponíveis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Lista de Hotéis</h1>
-
-    {% for hotel in hoteis %}
-        <div style="margin-bottom: 20px;">
-            <strong>{{ hotel.nome }}</strong><br>
-            Endereço: {{ hotel.endereco }}<br>
-            Quartos disponíveis: {{ hotel.qtd_quartos_disponiveis }}<br>
-
-            <a href="{% url 'listar_quartos' hotel.id %}?cliente_id={{ cliente_id }}">
-                Ver Quartos
-            </a>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+            </ul>
         </div>
-    {% empty %}
-        <p>Nenhum hotel cadastrado ainda.</p>
-    {% endfor %}
+    </nav>
 
-    <a href="{% url 'home' %}">⬅ Voltar</a>
+    <div class="container">
+        <h1 class="page-header">Lista de Hotéis</h1>
+        <div class="row">
+            {% for hotel in hoteis %}
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>{{ hotel.nome }}</strong></div>
+                        <div class="panel-body">
+                            <p><strong>Endereço:</strong> {{ hotel.endereco }}</p>
+                            <p><strong>Quartos disponíveis:</strong> {{ hotel.qtd_quartos_disponiveis }}</p>
+                            <a href="{% url 'listar_quartos' hotel.id %}?cliente_id={{ cliente_id }}" class="btn btn-primary">
+                                Ver Quartos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-md-12">
+                    <p class="text-muted">Nenhum hotel cadastrado ainda.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-default">
+            ⬅ Voltar
+        </a>
+    </div>
 </body>
 </html>

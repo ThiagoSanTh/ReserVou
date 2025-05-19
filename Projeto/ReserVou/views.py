@@ -5,10 +5,14 @@ from .forms import QuartoForm, ClienteForm
 from datetime import datetime
 
 # Create your views here.
+
+
 def pagina_inicial(request):
     clientes = Cliente.objects.all()
     hoteis = Hotel.objects.all()
     return render(request, 'ReserVou/pagina_inicial.html', {'clientes': clientes, 'hoteis': hoteis})
+
+#Hotel
 
 def gerenciar_hoteis(request):
     hoteis = Hotel.objects.prefetch_related('quarto').all()  # Otimiza a busca dos quartos
@@ -43,6 +47,29 @@ def cadastrar_quarto(request, hotel_id):
 
     return render(request, 'ReserVou/hotel/cadastrar_quarto.html', {'form': form, 'hotel': hotel})
 
+def editar_hotel(request, hotel_id):
+    hotel = get_object_or_404(Hotel, id=hotel_id)
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        endereco = request.POST.get('endereco')
+        if nome and endereco:
+            hotel.nome = nome
+            hotel.endereco = endereco
+            hotel.save()
+            return redirect('gerenciar_hoteis')
+        else:
+            erro = "Todos os campos são obrigatórios."
+            return render(request, 'ReserVou/Hoteis/editar_hotel.html', {'hotel': hotel, 'erro': erro})
+    return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel})
+
+def deletar_hotel(request, hotel_id):
+    hotel = get_object_or_404(Hotel, id=hotel_id)
+    if request.method == 'POST':
+        hotel.delete()
+        return redirect('gerenciar_hoteis')
+    return render(request, 'ReserVou/hotel/confirmar_deletar_hotel.html', {'hotel': hotel})
+
+#Cliente 
 
 def cadastrar_cliente(request):
     if request.method == 'POST':

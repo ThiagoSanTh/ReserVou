@@ -21,15 +21,23 @@ from ReserVou import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.pagina_inicial, name='home'),
-    path('hoteis/', views.gerenciar_hoteis, name = 'gerenciar_hoteis'),
-    path('hoteis/cadastrar', views.cadastrar_hotel, name = 'cadastrar_hotel'),
-    path('hotel/<int:hotel_id>/quarto/cadastrar/', views.cadastrar_quarto, name = 'cadastrar_quarto'),
-    path('clientes/novo/', views.cadastrar_cliente, name = 'cadastrar_cliente'),
-    path('clientes/<int:id>/', views.perfil_cliente, name = 'perfil_cliente'),
-    path('reservar_listar_hoteis/', views.reservar_listar_hoteis, name = 'reservar_listar_hoteis'),
-    path('hotel/<int:hotel_id>/quartos/', views.listar_quartos, name = 'listar_quartos'),
+
+        #cliente
+
     path('reserva/<int:quarto_id>/reservar/', views.fazer_reserva, name = 'fazer_reserva'),
     path('reserva/pagamento/', views.fazer_pagamento, name = 'fazer_pagamento'),
+    path('clientes/<int:id>/', views.perfil_cliente, name = 'perfil_cliente'),
+    path('reservar_listar_hoteis/', views.reservar_listar_hoteis, name = 'reservar_listar_hoteis'),
+    path('clientes/novo/', views.cadastrar_cliente, name = 'cadastrar_cliente'),
     path('deletar_cliente/<int:id>/', views.deletar_cliente, name = 'deletar_cliente'),
     path('editar_cliente/<int:id>/', views.editar_cliente, name = 'editar_cliente'),
+        
+        #hotel
+    
+    path('hoteis/', views.gerenciar_hoteis, name = 'gerenciar_hoteis'),
+    path('hotel/<int:hotel_id>/quarto/cadastrar/', views.cadastrar_quarto, name = 'cadastrar_quarto'),
+    path('hotel/<int:hotel_id>/quartos/', views.listar_quartos, name = 'listar_quartos'),
+    path('hoteis/cadastrar', views.cadastrar_hotel, name = 'cadastrar_hotel'),
+    path('editar_hotel/<int:hotel_id>/', views.editar_hotel, name = 'editar_hotel'),
+    path('deletar_hotel/<int:hotel_id>/', views.deletar_hotel, name = 'deletar_hotel'),
 ]

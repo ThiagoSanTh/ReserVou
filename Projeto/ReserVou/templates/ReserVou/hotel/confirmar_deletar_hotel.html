@@ -16,7 +16,7 @@
                 <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'home' %}">⬅ Voltar para a lista de clientes</a></li>
+                <li><a href="{% url 'home' %}">⬅ Voltar para a pagina inicial</a></li>
             </ul>
         </div>
     </nav>
@@ -27,12 +27,12 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <p class="lead text-center">
-                    Tem certeza que deseja excluir o perfil de <strong>{{ cliente.nome }}</strong>?
+                    Tem certeza que deseja excluir o Hotel <strong>{{ hotel.nome }}</strong>?
                 </p>
                 <form method="post" class="text-center">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Sim, excluir</button>
-                    <a href="{% url 'perfil_cliente' id=cliente.id %}" class="btn btn-default" style="margin-left: 10px;">Cancelar</a>
+                    <a href="{% url 'home' %}" class="btn btn-default" style="margin-left: 10px;">Cancelar</a>
                 </form>
             </div>
         </div>

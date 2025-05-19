@@ -1,26 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cadastrar Cliente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Cadastro de Cliente</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hotel Manager</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'home' %}">⬅ Voltar para a lista de clientes</a></li>
+            </ul>
+        </div>
+    </nav>
 
-        <label for="email">E-mail:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+    <div class="container">
+        <h2 class="text-center">Cadastro de Cliente</h2>
+        <hr>
 
-        <label for="telefone">Telefone (Whatsapp):</label><br>
-        <input type="text" id="telefone" name="telefone" maxlength="11" required><br><br>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
 
-        <button type="submit">Cadastrar</button>
-    </form>
+                    <div class="form-group">
+                        <label for="email">E-mail:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
 
-    <br>
-    <a href="{% url 'home' %}">⬅ Voltar para a lista de clientes</a>
+                    <div class="form-group">
+                        <label for="telefone">Telefone (Whatsapp):</label>
+                        <input type="text" class="form-control" id="telefone" name="telefone" maxlength="11" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

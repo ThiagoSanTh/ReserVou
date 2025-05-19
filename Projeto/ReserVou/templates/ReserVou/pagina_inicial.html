@@ -1,25 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
-    <title>Início</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Gerenciar Hotéis</h1>
 
-    <a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar</a>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hotel Manager</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <h1>Lista de Clientes</h1>
+    
+    <div class="container">
+        <h2>Lista de Hotéis</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="list-group">
+                    {% for hotel in hoteis %}
+                        <li class="list-group-item">
+                            <strong>{{ hotel.nome }}</strong><br>
+                            Endereço: {{ hotel.endereco }}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">Nenhum hotel cadastrado ainda.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
 
-    <ul>
-        {% for cliente in clientes %}
-            <li>
-                <a href="{% url 'perfil_cliente' cliente.id %}">{{ cliente.nome }}</a> - {{ cliente.email }}
-            </li>
-        {% empty %}
-            <li>Nenhum cliente cadastrado ainda.</li>
-        {% endfor %}
-    </ul>
+        <hr>
 
-    <a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Novo Cliente</a>    
+        <!-- Lista de Clientes -->
+        <h2>Lista de Clientes</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="list-group">
+                    {% for cliente in clientes %}
+                        <li class="list-group-item">
+                            <a href="{% url 'perfil_cliente' cliente.id %}">{{ cliente.nome }}</a> - {{ cliente.email }}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">Nenhum cliente cadastrado ainda.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+<hr>
 </body>
 </html>

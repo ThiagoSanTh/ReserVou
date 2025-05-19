@@ -1,47 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gerenciar Hotéis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Gerenciar Hotéis</h1>
 
-    <a href="{% url 'cadastrar_hotel' %}">➕ Cadastrar Novo Hotel</a>
-    <br><br>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hotel Manager</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'cadastrar_hotel' %}">➕ Cadastrar Novo Hotel</a></li>
+                <li><a href="{% url 'home' %}">⬅ Voltar para página inicial</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    {% for hotel in hoteis %}
-        <div style="margin-bottom: 30px; border: 1px solid #ccc; padding: 10px;">
-            <strong>{{ hotel.nome }}</strong><br>
-            Endereço: {{ hotel.endereco }}<br>
+    <div class="container">
+        <h2 class="text-center">Gerenciar Hotéis</h2>
+        <hr>
 
-            <a href="{% url 'cadastrar_quarto' hotel.id %}">➕ Cadastrar Quarto</a>
+        {% for hotel in hoteis %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>{{ hotel.nome }}</strong>
+            </div>
+            <div class="panel-body">
+                <p><strong>Endereço:</strong> {{ hotel.endereco }}</p>
+                <a class="btn btn-primary" href="{% url 'cadastrar_quarto' hotel.id %}">➕ Cadastrar Quarto</a>
 
-            <h4>Quartos cadastrados:</h4>
-            {% if hotel.quarto.all %}
-                <table border="1" cellpadding="5" cellspacing="0">
-                    <tr>
-                        <th>Número</th>
-                        <th>Tipo</th>
-                        <th>Preço da Diária</th>
-                        <th>Status</th>
-                    </tr>
-                    {% for quarto in hotel.quarto.all %}
+                <h4>Quartos cadastrados:</h4>
+                {% if hotel.quarto.all %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Tipo</th>
+                            <th>Preço da Diária</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for quarto in hotel.quarto.all %}
                         <tr>
                             <td>{{ quarto.numero }}</td>
                             <td>{{ quarto.tipo }}</td>
                             <td>R$ {{ quarto.preco_diaria }}</td>
                             <td>{{ quarto.status }}</td>
                         </tr>
-                    {% endfor %}
+                        {% endfor %}
+                    </tbody>
                 </table>
-            {% else %}
-                <p>Nenhum quarto cadastrado ainda.</p>
-            {% endif %}
+                {% else %}
+                <p class="text-muted">Nenhum quarto cadastrado ainda.</p>
+                {% endif %}
+            </div>
         </div>
-    {% empty %}
-        <p>Nenhum hotel cadastrado ainda.</p>
-    {% endfor %}
+        {% empty %}
+        <div class="alert alert-warning">
+            Nenhum hotel cadastrado ainda.
+        </div>
+        {% endfor %}
+    </div>
 
-    <a href="{% url 'home' %}">⬅ Voltar para página inicial</a>
 </body>
 </html>

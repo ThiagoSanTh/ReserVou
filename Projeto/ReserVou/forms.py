@@ -1,5 +1,5 @@
 from django import forms
-from .models import Quarto
+from .models import Quarto, Cliente
 
 class QuartoForm(forms.ModelForm):
     class Meta:
@@ -11,3 +11,8 @@ class QuartoForm(forms.ModelForm):
                 'placeholder': 'Digite o valor da diária',
             }),
         }
+
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['nome', 'email', 'telefone']

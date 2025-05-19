@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from .models import Hotel, Quarto, Cliente, Reserva, Pagamento
-from .forms import QuartoForm
+from .models import Hotel, Quarto, Cliente, Reserva
+from .forms import QuartoForm, ClienteForm
 from datetime import datetime
 
 # Create your views here.
@@ -190,3 +190,21 @@ def fazer_pagamento(request):
         }
 
         return render(request, 'ReserVou/fazer_pagamento.html', context)
+
+def editar_cliente(request, id):
+    cliente = get_object_or_404(Cliente, id=id)
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil_cliente', id=cliente.id)
+    else:
+        form = ClienteForm(instance=cliente)
+    return render(request, 'ReserVou/editar_cliente.html', {'form': form, 'cliente': cliente})
+
+def deletar_cliente(request, id):
+    cliente = get_object_or_404(Cliente, id=id)
+    if request.method == 'POST':
+        cliente.delete()
+        return redirect('home')
+    return render(request, 'ReserVou/confirmar_deletar_cliente.html', {'cliente': cliente})

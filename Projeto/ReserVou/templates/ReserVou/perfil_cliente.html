@@ -64,6 +64,12 @@
         <a href="{% url 'home' %}" class="btn btn-default">
             ⬅ Voltar para lista de clientes
         </a>
+        <a href="{% url 'editar_cliente' id=cliente.id %}" class="btn btn-primary btn-sm">
+                        ✏️ Editar Perfil
+                    </a>
+                    <a href="{% url 'deletar_cliente' id=cliente.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">
+                        🗑️ Deletar Perfil
+                    </a>
     </div>
 </body>
 </html>

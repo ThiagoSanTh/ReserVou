@@ -4,6 +4,10 @@
     <title>Início</title>
 </head>
 <body>
+    <h1>Gerenciar Hotéis</h1>
+
+    <a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar</a>
+
     <h1>Lista de Clientes</h1>
 
     <ul>
@@ -16,6 +20,6 @@
         {% endfor %}
     </ul>
 
-    <a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Novo Cliente</a>
+    <a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Novo Cliente</a>    
 </body>
 </html>

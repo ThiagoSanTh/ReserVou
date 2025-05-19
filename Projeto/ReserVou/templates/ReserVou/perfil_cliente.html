@@ -15,23 +15,29 @@
     <h2>Histórico de Reservas</h2>
 
     {% if reservas %}
-        <ul>
-            {% for reserva in reservas %}
-                <li>
-                    Hotel: {{ reserva.hotel.nome }} |
-                    Quarto: {{ reserva.quarto.numero }} |
-                    Entrada: {{ reserva.data_entrada }} |
-                    Saída: {{ reserva.data_saida }}
-                </li>
-            {% endfor %}
-        </ul>
+    <ul>
+        {% for reserva in reservas %}
+            <li>
+                Hotel: {{ reserva.hotel.nome }} |
+                Quarto: {{ reserva.quarto.numero }} |
+                Entrada: {{ reserva.check_in }} |
+                Saída: {{ reserva.check_out }} |
+                Status do pagamento: 
+                {% if reserva.pagamento %}
+                    {{ reserva.pagamento.status|capfirst }}
+                {% else %}
+                    Sem pagamento registrado
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
     {% else %}
         <p>Este cliente ainda não possui reservas.</p>
     {% endif %}
 
     <hr>
 
-    <a href="{% url 'listar_hoteis' %}?cliente_id={{ cliente.id }}">➕ Fazer Nova Reserva</a><br>
+    <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}">➕ Fazer Nova Reserva</a><br>
     <a href="{% url 'home' %}">⬅ Voltar para lista de clientes</a>
 </body>
 </html>

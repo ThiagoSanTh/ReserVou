@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quartos - {{ hotel.nome }}</title>
+</head>
+<body>
+    <h1>Quartos disponíveis em {{ hotel.nome }}</h1>
+
+    <form method="get">
+        <input type="hidden" name="cliente_id" value="{{ cliente_id }}">
+        <label>Check-in:</label>
+        <input type="date" name="checkin" value="{{ checkin }}">
+        <label>Check-out:</label>
+        <input type="date" name="checkout" value="{{ checkout }}">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if checkin and checkout %}
+        <h2>Resultados:</h2>
+        {% if quartos_disponiveis %}
+            <ul>
+                {% for quarto in quartos_disponiveis %}
+                    <li>
+                        Número: {{ quarto.numero }} -
+                        Tipo: {{ quarto.tipo }} -
+                        Preço: R$ {{ quarto.preco }}
+                        <br>
+                        <a href="{% url 'fazer_reserva' quarto.id %}?cliente_id={{ cliente_id }}&checkin={{ checkin }}&checkout={{ checkout }}">
+                            Reservar
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Nenhum quarto disponível para o período informado.</p>
+        {% endif %}
+    {% endif %}
+
+    <br>
+    <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente_id }}">⬅ Voltar para hotéis</a>
+</body>
+</html>

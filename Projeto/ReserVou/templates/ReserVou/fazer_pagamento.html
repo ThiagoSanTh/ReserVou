@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pagamento</title>
+</head>
+<body>
+    <h1>Pagamento da Reserva</h1>
+
+    <p><strong>Cliente:</strong> {{ cliente.nome }}</p>
+    <p><strong>Hotel:</strong> {{ hotel.nome }}</p>
+    <p><strong>Quarto:</strong> Número {{ quarto.numero }} - Tipo {{ quarto.tipo }}</p>
+    <p><strong>Período:</strong> {{ checkin }} até {{ checkout }}</p>
+    <p><strong>Total a pagar:</strong> R$ {{ total }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="cliente_id" value="{{ cliente.id }}">
+        <input type="hidden" name="quarto_id" value="{{ quarto.id }}">
+        <input type="hidden" name="checkin" value="{{ checkin }}">
+        <input type="hidden" name="checkout" value="{{ checkout }}">
+
+        <label for="tipo_pagamento"><strong>Tipo de pagamento:</strong></label>
+        <select name="tipo_pagamento" id="tipo_pagamento" required>
+            <option value="" disabled selected>Selecione</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Pix">Pix</option>
+            <option value="Dinheiro">Dinheiro</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Confirmar Pagamento</button>
+    </form>
+
+    <br>
+    <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}">⬅ Cancelar e voltar</a>
+</body>
+</html>

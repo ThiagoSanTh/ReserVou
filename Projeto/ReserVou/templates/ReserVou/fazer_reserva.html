@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resumo da Reserva</title>
+</head>
+<body>
+    <h1>Resumo da Reserva</h1>
+
+    <p><strong>Cliente:</strong> {{ cliente.nome }}</p>
+    <p><strong>Hotel:</strong> {{ hotel.nome }}</p>
+    <p><strong>Quarto:</strong> Número {{ quarto.numero }} - Tipo {{ quarto.tipo }}</p>
+    <p><strong>Período:</strong> {{ checkin }} até {{ checkout }}</p>
+    <p><strong>Total:</strong> R$ {{ total }}</p>
+
+    <form action="{% url 'fazer_pagamento' %}" method="get">
+        <input type="hidden" name="cliente_id" value="{{ cliente.id }}">
+        <input type="hidden" name="quarto_id" value="{{ quarto.id }}">
+        <input type="hidden" name="checkin" value="{{ checkin }}">
+        <input type="hidden" name="checkout" value="{{ checkout }}">
+        <button type="submit">Ir para pagamento</button>
+    </form>
+
+    <br>
+    <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}">⬅ Voltar para hotéis</a>
+</body>
+</html>

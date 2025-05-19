@@ -5,8 +5,9 @@ class Hotel (models.Model):
     nome = models.CharField(max_length = 100, null = False, blank = False)
     endereco = models.CharField(max_length = 150, null = False, blank = False)
     
+    @property
     def qtd_quartos_disponiveis(self):
-        return self.quarto.filter(status='disponivel').count()
+        return self.quarto.filter(status='disponível').count()
     
     def __str__(self):
         return self.nome

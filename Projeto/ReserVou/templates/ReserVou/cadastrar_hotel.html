@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastrar Hotel</title>
+</head>
+<body>
+    <h1>Cadastrar Novo Hotel</h1>
+
+    {% if erro %}
+        <p style="color:red;">{{ erro }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        Nome: <input type="text" name="nome"><br><br>
+        Endereço: <input type="text" name="endereco"><br><br>
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a href="{% url 'home' %}">⬅ Voltar</a>
+</body>
+</html>

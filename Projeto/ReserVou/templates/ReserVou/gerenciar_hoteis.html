@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerenciar Hotéis</title>
+</head>
+<body>
+    <h1>Gerenciar Hotéis</h1>
+
+    <a href="{% url 'cadastrar_hotel' %}">➕ Cadastrar Novo Hotel</a>
+    <br><br>
+
+    {% for hotel in hoteis %}
+        <div style="margin-bottom: 30px; border: 1px solid #ccc; padding: 10px;">
+            <strong>{{ hotel.nome }}</strong><br>
+            Endereço: {{ hotel.endereco }}<br>
+
+            <a href="{% url 'cadastrar_quarto' hotel.id %}">➕ Cadastrar Quarto</a>
+
+            <h4>Quartos cadastrados:</h4>
+            {% if hotel.quarto.all %}
+                <table border="1" cellpadding="5" cellspacing="0">
+                    <tr>
+                        <th>Número</th>
+                        <th>Tipo</th>
+                        <th>Preço da Diária</th>
+                        <th>Status</th>
+                    </tr>
+                    {% for quarto in hotel.quarto.all %}
+                        <tr>
+                            <td>{{ quarto.numero }}</td>
+                            <td>{{ quarto.tipo }}</td>
+                            <td>R$ {{ quarto.preco_diaria }}</td>
+                            <td>{{ quarto.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>Nenhum quarto cadastrado ainda.</p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Nenhum hotel cadastrado ainda.</p>
+    {% endfor %}
+
+    <a href="{% url 'home' %}">⬅ Voltar para página inicial</a>
+</body>
+</html>

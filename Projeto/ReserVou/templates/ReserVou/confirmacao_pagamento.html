@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmação</title>
+</head>
+<body>
+    <h1>Reserva Confirmada!</h1>
+
+    <p><strong>Cliente:</strong> {{ reserva.cliente.nome }}</p>
+    <p><strong>Hotel:</strong> {{ reserva.hotel.nome }}</p>
+    <p><strong>Quarto:</strong> Número {{ reserva.quarto.numero }}</p>
+    <p><strong>Check-in:</strong> {{ reserva.check_in }}</p>
+    <p><strong>Check-out:</strong> {{ reserva.check_out }}</p>
+    <p><strong>Pagamento via:</strong> {{ tipo_pagamento }}</p>
+    <p><strong>Valor total:</strong> R$ {{ total }}</p>
+
+    <br>
+    <a href="{% url 'perfil_cliente' reserva.cliente.id %}">
+        <button>Voltar para o histórico do cliente</button>
+    </a>
+</body>
+</html>

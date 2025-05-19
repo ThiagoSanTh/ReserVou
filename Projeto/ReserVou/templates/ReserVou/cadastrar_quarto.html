@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastrar Quarto</title>
+</head>
+<body>
+    <h1>Cadastrar Quarto para o Hotel {{ hotel.nome }}</h1>
+
+    {% if erro %}
+        <p style="color: red;">{{ erro }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        Número: <input type="text" name="numero"><br><br>
+        Tipo:
+        <select name="tipo">
+            <option value="tradicional">Tradicional</option>
+            <option value="premium">Premium</option>
+            <option value="luxo">Luxo</option>
+        </select><br><br>
+        Preço da diária: <input type="number" name="preco_diaria" step="0.01"><br><br>
+        Status:
+        <select name="status">
+            <option value="disponível">Disponível</option>
+            <option value="reservado">Reservado</option>
+        </select><br><br>
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a href="{% url 'gerenciar_hoteis' %}">⬅ Voltar</a>
+</body>
+</html>

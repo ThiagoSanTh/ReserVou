@@ -32,7 +32,8 @@
                     {% for hotel in hoteis %}
                         <li class="list-group-item">
                             <strong>{{ hotel.nome }}</strong><br>
-                            Endereço: {{ hotel.endereco }}
+                            Endereço: {{ hotel.endereco }}  <a  href="#" class="btn btn-primary btn-sm">✏️ Editar Hotel
+                                <a href="#" class="btn btn-danger btn-sm" style="margin-left: 5px;">🗑️ Deletar Hotel</a>
                         </li>
                     {% empty %}
                         <li class="list-group-item text-muted">Nenhum hotel cadastrado ainda.</li>

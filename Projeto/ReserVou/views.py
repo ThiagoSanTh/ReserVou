@@ -12,7 +12,7 @@ def pagina_inicial(request):
 
 def gerenciar_hoteis(request):
     hoteis = Hotel.objects.prefetch_related('quarto').all()  # Otimiza a busca dos quartos
-    return render(request, 'ReserVou/gerenciar_hoteis.html', {'hoteis': hoteis})
+    return render(request, 'ReserVou/hotel/gerenciar_hoteis.html', {'hoteis': hoteis})
 
 def cadastrar_hotel(request):
     if request.method == 'POST':
@@ -24,9 +24,9 @@ def cadastrar_hotel(request):
             return redirect('gerenciar_hoteis')
         else:
             erro = "Todos os campos são obrigatórios."
-            return render(request, 'ReserVou/cadastrar_hotel.html', {'erro': erro})
+            return render(request, 'ReserVou/hotel/cadastrar_hotel.html', {'erro': erro})
 
-    return render(request, 'ReserVou/cadastrar_hotel.html')
+    return render(request, 'ReserVou/hotel/cadastrar_hotel.html')
 
 def cadastrar_quarto(request, hotel_id):
     hotel = Hotel.objects.get(id=hotel_id)
@@ -41,7 +41,7 @@ def cadastrar_quarto(request, hotel_id):
     else:
         form = QuartoForm()
 
-    return render(request, 'ReserVou/cadastrar_quarto.html', {'form': form, 'hotel': hotel})
+    return render(request, 'ReserVou/hotel/cadastrar_quarto.html', {'form': form, 'hotel': hotel})
 
 
 def cadastrar_cliente(request):
@@ -55,15 +55,15 @@ def cadastrar_cliente(request):
             return redirect('home')
         else:
             erro = "Todos os campos são obrigatórios."
-            return render(request, 'ReserVou/cadastrar_cliente.html', {'erro': erro})
+            return render(request, 'ReserVou/cliente/cadastrar_cliente.html', {'erro': erro})
 
-    return render(request, 'ReserVou/cadastrar_cliente.html')
+    return render(request, 'ReserVou/cliente/cadastrar_cliente.html')
             
 def perfil_cliente(request, id):
     cliente = Cliente.objects.get(id = id)
     reservas = Reserva.objects.filter(cliente = cliente).select_related('quarto', 'hotel')
     
-    return render(request, 'ReserVou/perfil_cliente.html', {
+    return render(request, 'ReserVou/cliente/perfil_cliente.html', {
         'cliente': cliente,
         'reservas': reservas,
     })
@@ -72,7 +72,7 @@ def reservar_listar_hoteis(request):
     cliente_id = request.GET.get('cliente_id')
     hoteis = Hotel.objects.all()
     
-    return render(request, 'ReserVou/reservar_listar_hoteis.html', {
+    return render(request, 'ReserVou/hotel/reservar_listar_hoteis.html', {
         'hoteis' : hoteis,
         'cliente_id' : cliente_id
     })
@@ -103,7 +103,7 @@ def listar_quartos(request, hotel_id):
         'checkout': checkout,
         'quartos_disponiveis': quartos_disponiveis,
     }
-    return render(request, 'ReserVou/listar_quartos.html', context)
+    return render(request, 'ReserVou/hotel/listar_quartos.html', context)
 
 def fazer_reserva(request, quarto_id):
     cliente_id = request.GET.get('cliente_id')
@@ -200,11 +200,11 @@ def editar_cliente(request, id):
             return redirect('perfil_cliente', id=cliente.id)
     else:
         form = ClienteForm(instance=cliente)
-    return render(request, 'ReserVou/editar_cliente.html', {'form': form, 'cliente': cliente})
+    return render(request, 'ReserVou/cliente/editar_cliente.html', {'form': form, 'cliente': cliente})
 
 def deletar_cliente(request, id):
     cliente = get_object_or_404(Cliente, id=id)
     if request.method == 'POST':
         cliente.delete()
         return redirect('home')
-    return render(request, 'ReserVou/confirmar_deletar_cliente.html', {'cliente': cliente})
+    return render(request, 'ReserVou/cliente/confirmar_deletar_cliente.html', {'cliente': cliente})

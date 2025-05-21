@@ -14,11 +14,11 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>               
             </ul>
         </div>
     </nav>
@@ -32,8 +32,8 @@
                     {% for hotel in hoteis %}
                         <li class="list-group-item">
                             <strong>{{ hotel.nome }}</strong><br>
-                            Endereço: {{ hotel.endereco }}  <a  href="{% url 'editar_hotel' hotel.id %}" class="btn btn-primary btn-sm">✏️ Editar Hotel
-                                <a href="{% url 'deletar_hotel' hotel.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">🗑️ Deletar Hotel</a>
+                            Endereço: {{ hotel.endereco }}  <a href="{% url 'editar_hotel' hotel.id %}" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span> Editar Hotel</a>
+<a href="{% url 'deletar_hotel' hotel.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;"><span class="glyphicon glyphicon-trash"></span> Deletar Hotel</a>
                         </li>
                     {% empty %}
                         <li class="list-group-item text-muted">Nenhum hotel cadastrado ainda.</li>
@@ -51,7 +51,9 @@
                 <ul class="list-group">
                     {% for cliente in clientes %}
                         <li class="list-group-item">
-                            <a href="{% url 'perfil_cliente' cliente.id %}">{{ cliente.nome }}</a> - {{ cliente.email }}
+                            <a href="{% url 'perfil_cliente' cliente.id %}" class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-user"></span> {{ cliente.nome }}
+                            </a> - {{ cliente.email }}
                         </li>
                     {% empty %}
                         <li class="list-group-item text-muted">Nenhum cliente cadastrado ainda.</li>

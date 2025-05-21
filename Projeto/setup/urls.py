@@ -40,4 +40,6 @@ urlpatterns = [
     path('hoteis/cadastrar', views.cadastrar_hotel, name = 'cadastrar_hotel'),
     path('editar_hotel/<int:hotel_id>/', views.editar_hotel, name = 'editar_hotel'),
     path('deletar_hotel/<int:hotel_id>/', views.deletar_hotel, name = 'deletar_hotel'),
+    path('editar_quarto/<int:quarto_id>/', views.editar_quarto, name = 'editar_quarto'),
+    path('deletar_quarto/<int:quarto_id>/', views.deletar_quarto, name = 'deletar_quarto'),
 ]

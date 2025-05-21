@@ -13,11 +13,12 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
+                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para página inicial</a></li>
             </ul>
         </div>
     </nav>
@@ -40,7 +41,7 @@
         </div>
 
         <a href="{% url 'perfil_cliente' reserva.cliente.id %}" class="btn btn-primary">
-            Voltar para o histórico do cliente
+            <span class="glyphicon glyphicon-arrow-left"></span> Voltar para o histórico do cliente
         </a>
     </div>
 </body>

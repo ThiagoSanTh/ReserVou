@@ -13,11 +13,12 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
+                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para página inicial</a></li>
             </ul>
         </div>
     </nav>
@@ -52,9 +53,11 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-success">Confirmar Pagamento</button>
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-ok"></span> Confirmar Pagamento
+            </button>
             <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}" class="btn btn-default" style="margin-left: 10px;">
-                ⬅ Cancelar e voltar
+                <span class="glyphicon glyphicon-arrow-left"></span> Cancelar e voltar
             </a>
         </form>
     </div>

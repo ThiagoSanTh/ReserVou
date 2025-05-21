@@ -13,11 +13,11 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
             </ul>
         </div>
     </nav>
@@ -33,7 +33,7 @@
                             <p><strong>Endereço:</strong> {{ hotel.endereco }}</p>
                             <p><strong>Quartos disponíveis:</strong> {{ hotel.qtd_quartos_disponiveis }}</p>
                             <a href="{% url 'listar_quartos' hotel.id %}?cliente_id={{ cliente_id }}" class="btn btn-primary">
-                                Ver Quartos
+                                <span class="glyphicon glyphicon-bed"></span> Ver Quartos
                             </a>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
             {% endfor %}
         </div>
         <a href="{% url 'home' %}" class="btn btn-default">
-            ⬅ Voltar
+            <span class="glyphicon glyphicon-arrow-left"></span> Voltar
         </a>
     </div>
 </body>

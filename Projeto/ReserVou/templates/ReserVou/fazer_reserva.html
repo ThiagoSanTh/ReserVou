@@ -13,11 +13,12 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
+                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para página inicial</a></li>
             </ul>
         </div>
     </nav>
@@ -40,11 +41,13 @@
             <input type="hidden" name="quarto_id" value="{{ quarto.id }}">
             <input type="hidden" name="checkin" value="{{ checkin }}">
             <input type="hidden" name="checkout" value="{{ checkout }}">
-            <button type="submit" class="btn btn-success">Ir para pagamento</button>
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-credit-card"></span> Ir para pagamento
+            </button>
         </form>
 
         <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}" class="btn btn-default" style="margin-top: 15px;">
-            ⬅ Voltar para hotéis
+            <span class="glyphicon glyphicon-arrow-left"></span> Voltar para hotéis
         </a>
     </div>
 </body>

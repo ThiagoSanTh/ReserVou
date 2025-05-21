@@ -14,10 +14,10 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'home' %}">⬅ Voltar para a lista de clientes</a></li>
+                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para a lista de clientes</a></li>
             </ul>
         </div>
     </nav>
@@ -46,7 +46,18 @@
                         <input type="text" class="form-control" id="telefone" name="telefone" maxlength="11" required>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Ações">
+                        <div class="btn-group" role="group">
+                            <button type="submit" class="btn btn-success">
+                                <span class="glyphicon glyphicon-ok"></span> Cadastrar
+                            </button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'home' %}" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-left"></span> Voltar
+                            </a>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

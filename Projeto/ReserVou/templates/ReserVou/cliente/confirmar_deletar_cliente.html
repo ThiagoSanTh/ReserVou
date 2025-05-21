@@ -13,10 +13,10 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'home' %}">⬅ Voltar para a lista de clientes</a></li>
+                <li><a href="{% url 'perfil_cliente' cliente.id %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</a></li>
             </ul>
         </div>
     </nav>
@@ -31,8 +31,14 @@
                 </p>
                 <form method="post" class="text-center">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Sim, excluir</button>
-                    <a href="{% url 'perfil_cliente' id=cliente.id %}" class="btn btn-default" style="margin-left: 10px;">Cancelar</a>
+                    <div class="btn-group" role="group">
+                        <button type="submit" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-trash"></span> Sim, excluir
+                        </button>
+                        <a href="{% url 'perfil_cliente' id=cliente.id %}" class="btn btn-default" style="margin-left: 10px;">
+                            <span class="glyphicon glyphicon-arrow-left"></span> Cancelar
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>

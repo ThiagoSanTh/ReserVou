@@ -13,17 +13,18 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
+                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para página inicial</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
-        <h1 class="page-header">Quartos disponíveis em {{ hotel.nome }}</h1>
+        <h1 class="page-header">Data de Check-in e Check-out do {{ hotel.nome }} que deseja</h1>
 
         <form method="get" class="form-inline">
             <input type="hidden" name="cliente_id" value="{{ cliente_id }}">
@@ -35,7 +36,9 @@
                 <label for="checkout">Check-out:</label>
                 <input type="date" class="form-control" id="checkout" name="checkout" value="{{ checkout }}">
             </div>
-            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span> Buscar
+            </button>
         </form>
 
         {% if checkin and checkout %}
@@ -46,10 +49,10 @@
                         <li class="list-group-item">
                             <strong>Número:</strong> {{ quarto.numero }} -
                             <strong>Tipo:</strong> {{ quarto.tipo }} -
-                            <strong>Preço:</strong> R$ {{ quarto.preco }}
+                            <strong>Valor por diária:</strong> R$ {{ quarto.preco_diaria }}
                             <br>
                             <a href="{% url 'fazer_reserva' quarto.id %}?cliente_id={{ cliente_id }}&checkin={{ checkin }}&checkout={{ checkout }}" class="btn btn-success btn-sm" style="margin-top: 5px;">
-                                Reservar
+                                <span class="glyphicon glyphicon-ok"></span> Reservar
                             </a>
                         </li>
                     {% endfor %}
@@ -60,7 +63,7 @@
         {% endif %}
 
         <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente_id }}" class="btn btn-default" style="margin-top: 15px;">
-            ⬅ Voltar para hotéis
+            <span class="glyphicon glyphicon-arrow-left"></span> Voltar para hotéis
         </a>
     </div>
 </body>

@@ -13,11 +13,12 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">Hotel Manager</a>
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}">🏨 Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}">➕ Cadastrar Cliente</a></li>
+                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
+                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para lista de clientes</a></li>
             </ul>
         </div>
     </nav>
@@ -59,17 +60,14 @@
         </div>
 
         <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}" class="btn btn-success">
-            ➕ Fazer Nova Reserva
-        </a>
-        <a href="{% url 'home' %}" class="btn btn-default">
-            ⬅ Voltar para lista de clientes
+            <span class="glyphicon glyphicon-plus-sign"></span> Fazer Nova Reserva
         </a>
         <a href="{% url 'editar_cliente' id=cliente.id %}" class="btn btn-primary btn-sm">
-                        ✏️ Editar Perfil
-                    </a>
-                    <a href="{% url 'deletar_cliente' id=cliente.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">
-                        🗑️ Deletar Perfil
-                    </a>
+            <span class="glyphicon glyphicon-pencil"></span> Editar Perfil
+        </a>
+        <a href="{% url 'deletar_cliente' id=cliente.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">
+            <span class="glyphicon glyphicon-trash"></span> Deletar Perfil
+        </a>
     </div>
 </body>
 </html>

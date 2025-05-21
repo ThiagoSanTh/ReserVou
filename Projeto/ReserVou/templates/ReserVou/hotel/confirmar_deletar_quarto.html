@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Confirmar Exclusão hotel</title>
+    <title>Confirmar Exclusão do Quarto</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -16,7 +16,7 @@
                 <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar </a></li>
+                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</a></li>
             </ul>
         </div>
     </nav>
@@ -27,7 +27,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <p class="lead text-center">
-                    Tem certeza que deseja excluir o Hotel <strong>{{ hotel.nome }}</strong>?
+                    Tem certeza que deseja excluir o Quarto <strong>{{ quarto.numero }}</strong>?
                 </p>
                 <form method="post" class="text-center">
                     {% csrf_token %}
@@ -35,7 +35,7 @@
                         <button type="submit" class="btn btn-danger">
                             <span class="glyphicon glyphicon-trash"></span> Sim, excluir
                         </button>
-                        <a href="{% url 'home' %}" class="btn btn-default" style="margin-left: 10px;">
+                        <a href="{% url 'gerenciar_hoteis' %}" class="btn btn-default" style="margin-left: 10px;">
                             <span class="glyphicon glyphicon-arrow-left"></span> Cancelar
                         </a>
                     </div>

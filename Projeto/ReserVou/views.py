@@ -32,6 +32,28 @@ def cadastrar_hotel(request):
 
     return render(request, 'ReserVou/hotel/cadastrar_hotel.html')
 
+def editar_hotel(request, hotel_id):
+    hotel = get_object_or_404(Hotel, id=hotel_id)
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        endereco = request.POST.get('endereco')
+        if nome and endereco:
+            hotel.nome = nome
+            hotel.endereco = endereco
+            hotel.save()
+            return redirect('gerenciar_hoteis')
+        else:
+            erro = "Todos os campos são obrigatórios."
+            return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel, 'erro': erro})
+    return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel})
+
+def deletar_hotel(request, hotel_id):
+    hotel = get_object_or_404(Hotel, id=hotel_id)
+    if request.method == 'POST':
+        hotel.delete()
+        return redirect('gerenciar_hoteis')
+    return render(request, 'ReserVou/hotel/confirmar_deletar_hotel.html', {'hotel': hotel})
+
 def cadastrar_quarto(request, hotel_id):
     hotel = Hotel.objects.get(id=hotel_id)
 
@@ -47,28 +69,34 @@ def cadastrar_quarto(request, hotel_id):
 
     return render(request, 'ReserVou/hotel/cadastrar_quarto.html', {'form': form, 'hotel': hotel})
 
-def editar_hotel(request, hotel_id):
-    hotel = get_object_or_404(Hotel, id=hotel_id)
+
+def editar_quarto(request, quarto_id):
+    quarto = get_object_or_404(Quarto, id=quarto_id)
     if request.method == 'POST':
-        nome = request.POST.get('nome')
-        endereco = request.POST.get('endereco')
-        if nome and endereco:
-            hotel.nome = nome
-            hotel.endereco = endereco
-            hotel.save()
+        numero = request.POST.get('numero')
+        tipo = request.POST.get('tipo')
+        preco_diaria = request.POST.get('preco_diaria')
+        status = request.POST.get('status')
+        if numero and tipo and preco_diaria and status:
+            quarto.numero = numero
+            quarto.tipo = tipo
+            quarto.preco_diaria = preco_diaria
+            quarto.status = status
+            quarto.save()
             return redirect('gerenciar_hoteis')
         else:
             erro = "Todos os campos são obrigatórios."
-            return render(request, 'ReserVou/Hoteis/editar_hotel.html', {'hotel': hotel, 'erro': erro})
-    return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel})
+            return render(request, 'ReserVou/hotel/editar_quarto.html', {'quarto': quarto, 'erro': erro})
+    return render(request, 'ReserVou/hotel/editar_quarto.html', {'quarto': quarto})
 
-def deletar_hotel(request, hotel_id):
-    hotel = get_object_or_404(Hotel, id=hotel_id)
+
+def deletar_quarto(request, quarto_id):
+    quarto = get_object_or_404(Quarto, id=quarto_id)
     if request.method == 'POST':
-        hotel.delete()
+        quarto.delete()
         return redirect('gerenciar_hoteis')
-    return render(request, 'ReserVou/hotel/confirmar_deletar_hotel.html', {'hotel': hotel})
-
+    return render(request, 'ReserVou/hotel/confirmar_deletar_quarto.html', {'quarto': quarto})
+    
 #Cliente 
 
 def cadastrar_cliente(request):
@@ -221,13 +249,19 @@ def fazer_pagamento(request):
 def editar_cliente(request, id):
     cliente = get_object_or_404(Cliente, id=id)
     if request.method == 'POST':
-        form = ClienteForm(request.POST, instance=cliente)
-        if form.is_valid():
-            form.save()
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        telefone = request.POST.get('telefone')
+        if nome and email and telefone:
+            cliente.nome = nome
+            cliente.email = email
+            cliente.telefone = telefone
+            cliente.save()
             return redirect('perfil_cliente', id=cliente.id)
-    else:
-        form = ClienteForm(instance=cliente)
-    return render(request, 'ReserVou/cliente/editar_cliente.html', {'form': form, 'cliente': cliente})
+        else:
+            erro = "Todos os campos são obrigatórios."
+            return render(request, 'ReserVou/cliente/editar_cliente.html', {'cliente': cliente, 'erro': erro})
+    return render(request, 'ReserVou/cliente/editar_cliente.html', {'cliente': cliente})
 
 def deletar_cliente(request, id):
     cliente = get_object_or_404(Cliente, id=id)

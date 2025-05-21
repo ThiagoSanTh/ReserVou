@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Cancelamento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h2 class="text-center text-danger">Confirmar Cancelamento</h2>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p class="lead text-center">
+                    Tem certeza que deseja cancelar a reserva do hotel <strong>{{ reserva.hotel.nome }}</strong>, quarto <strong>{{ reserva.quarto.numero }}</strong>?
+                </p>
+                <form method="post" class="text-center">
+                    {% csrf_token %}
+                    <div class="btn-group" role="group">
+                        <button type="submit" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span> Sim, cancelar
+                        </button>
+                        <a href="{% url 'perfil_cliente' reserva.cliente.id %}" class="btn btn-default" style="margin-left: 10px;">
+                            <span class="glyphicon glyphicon-arrow-left"></span> Não, voltar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -45,9 +45,10 @@ class Reserva (models.Model):
     quarto = models.ForeignKey(Quarto, on_delete = models.CASCADE, related_name = 'reservas')
     check_in = models.DateField()
     check_out = models.DateField()
+    status = models.CharField(max_length=20, choices=[('ativa', 'Ativa'), ('cancelada', 'Cancelada')], default='ativa')
     
     def __str__(self):
-        return f"{self.cliente.nome} - {self.hotel.nome} - Quarto {self.quarto.numero} ({self.data_entrada} a {self.data_saida})"
+        return f"{self.cliente.nome} - {self.hotel.nome} - Quarto {self.quarto.numero} ({self.check_in} a {self.check_out})"
     
 class Pagamento (models.Model):
     METODO_ESCOLHIDO = [

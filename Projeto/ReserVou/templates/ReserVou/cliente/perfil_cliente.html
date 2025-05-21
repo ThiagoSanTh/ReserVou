@@ -50,6 +50,13 @@
                             {% else %}
                                 <span class="text-muted">Sem pagamento registrado</span>
                             {% endif %}
+                            {% if reserva.status != 'cancelada' %}
+                                <a href="{% url 'cancelar_reserva' reserva.id %}" class="btn btn-warning btn-xs pull-right" style="margin-left: 10px;">
+                                    <span class="glyphicon glyphicon-remove"></span> Cancelar Reserva
+                                </a>
+                            {% else %}
+                                <span class="label label-danger pull-right">Cancelada</span>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>

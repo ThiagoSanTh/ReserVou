@@ -269,3 +269,11 @@ def deletar_cliente(request, id):
         cliente.delete()
         return redirect('home')
     return render(request, 'ReserVou/cliente/confirmar_deletar_cliente.html', {'cliente': cliente})
+
+def cancelar_reserva(request, reserva_id):
+    reserva = get_object_or_404(Reserva, id=reserva_id)
+    if request.method == 'POST':
+        reserva.status = 'cancelada'
+        reserva.save()
+        return redirect('perfil_cliente', id=reserva.cliente.id)
+    return render(request, 'ReserVou/cliente/confirmar_cancelar_reserva.html', {'reserva': reserva})

@@ -15,7 +15,7 @@ def pagina_inicial(request):
 #Hotel
 
 def gerenciar_hoteis(request):
-    hoteis = Hotel.objects.prefetch_related('quarto').all()  # Otimiza a busca dos quartos
+    hoteis = Hotel.objects.prefetch_related('quarto').all()
     return render(request, 'ReserVou/hotel/gerenciar_hoteis.html', {'hoteis': hoteis})
 
 def cadastrar_hotel(request):

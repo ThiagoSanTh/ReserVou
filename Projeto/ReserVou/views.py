@@ -123,14 +123,27 @@ def perfil_cliente(request, id):
         'reservas': reservas,
     })
     
+def selecionar_datas(request):
+    cliente_id = request.GET.get('cliente_id')
+    if request.method == 'POST':
+        checkin = request.POST.get('checkin')
+        checkout = request.POST.get('checkout')
+        # Redireciona para a listagem de hotéis com as datas selecionadas
+        return redirect(f'/reservar_listar_hoteis/?cliente_id={cliente_id}&checkin={checkin}&checkout={checkout}')
+    return render(request, 'ReserVou/selecionar_datas.html', {'cliente_id': cliente_id})
+
 def reservar_listar_hoteis(request):
     cliente_id = request.GET.get('cliente_id')
+    checkin = request.GET.get('checkin')
+    checkout = request.GET.get('checkout')
     hoteis = Hotel.objects.all()
-    
-    return render(request, 'ReserVou/hotel/reservar_listar_hoteis.html', {
-        'hoteis' : hoteis,
-        'cliente_id' : cliente_id
-    })
+    context = {
+        'hoteis': hoteis,
+        'cliente_id': cliente_id,
+        'checkin': checkin,
+        'checkout': checkout,
+    }
+    return render(request, 'ReserVou/hotel/reservar_listar_hoteis.html', context)
     
 def listar_quartos(request, hotel_id):
     hotel = get_object_or_404(Hotel, id=hotel_id)
@@ -140,7 +153,8 @@ def listar_quartos(request, hotel_id):
 
     quartos_disponiveis = []
 
-    if checkin and checkout:
+    # Só processa se ambos checkin e checkout estiverem preenchidos e não forem 'None'
+    if checkin and checkout and checkin != 'None' and checkout != 'None':
         # Converte as datas de string para objeto date
         checkin_date = datetime.strptime(checkin, '%Y-%m-%d').date()
         checkout_date = datetime.strptime(checkout, '%Y-%m-%d').date()
@@ -211,6 +225,19 @@ def fazer_pagamento(request):
             check_in=data_in,
             check_out=data_out
         )
+        quarto.status = 'reservado'
+        quarto.save()
+        from .models import Pagamento
+        # Garante que o método está em minúsculo e corresponde aos choices
+        metodo = tipo_pagamento.lower() if tipo_pagamento else 'pix'
+        if metodo not in ['pix', 'boleto', 'credito', 'debito']:
+            metodo = 'pix'
+        Pagamento.objects.create(
+            reserva=reserva,
+            valor=total,
+            metodo=metodo,
+            status='pago'
+        )
 
         # Exibir confirmação (ou redirecionar para outra página de sucesso)
         return render(request, 'ReserVou/confirmacao_pagamento.html', {
@@ -218,7 +245,6 @@ def fazer_pagamento(request):
             'tipo_pagamento': tipo_pagamento,
             'total': total,
         })
-
     else:
         # GET: carregar os dados para exibir o formulário
         cliente_id = request.GET.get('cliente_id')
@@ -275,5 +301,13 @@ def cancelar_reserva(request, reserva_id):
     if request.method == 'POST':
         reserva.status = 'cancelada'
         reserva.save()
+        quarto = reserva.quarto
+        quarto.status = 'disponível'
+        quarto.save()
+        # Atualiza o status do pagamento para "cancelado"
+        if hasattr(reserva, 'pagamento'):
+            pagamento = reserva.pagamento
+            pagamento.status = 'cancelado'
+            pagamento.save()
         return redirect('perfil_cliente', id=reserva.cliente.id)
     return render(request, 'ReserVou/cliente/confirmar_cancelar_reserva.html', {'reserva': reserva})

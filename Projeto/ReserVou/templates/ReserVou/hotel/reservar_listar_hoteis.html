@@ -32,7 +32,7 @@
                         <div class="panel-body">
                             <p><strong>Endereço:</strong> {{ hotel.endereco }}</p>
                             <p><strong>Quartos disponíveis:</strong> {{ hotel.qtd_quartos_disponiveis }}</p>
-                            <a href="{% url 'listar_quartos' hotel.id %}?cliente_id={{ cliente_id }}" class="btn btn-primary">
+                            <a href="{% url 'listar_quartos' hotel.id %}?cliente_id={{ cliente_id }}&checkin={{ checkin }}&checkout={{ checkout }}" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-bed"></span> Ver Quartos
                             </a>
                         </div>

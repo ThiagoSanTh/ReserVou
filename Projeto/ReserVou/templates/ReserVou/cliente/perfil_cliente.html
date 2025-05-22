@@ -46,7 +46,15 @@
                             <strong>Saída:</strong> {{ reserva.check_out }} |
                             <strong>Status do pagamento:</strong>
                             {% if reserva.pagamento %}
-                                {{ reserva.pagamento.status|capfirst }}
+                                {% if reserva.pagamento.status == 'pago' %}
+                                    <span class="label label-success">Pago</span>
+                                {% elif reserva.pagamento.status == 'pendente' %}
+                                    <span class="label label-warning">Pendente</span>
+                                {% elif reserva.pagamento.status == 'cancelado' %}
+                                    <span class="label label-danger">Cancelado</span>
+                                {% else %}
+                                    <span class="label label-default">{{ reserva.pagamento.status|capfirst }}</span>
+                                {% endif %}
                             {% else %}
                                 <span class="text-muted">Sem pagamento registrado</span>
                             {% endif %}

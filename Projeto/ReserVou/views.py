@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import Hotel, Quarto, Cliente, Reserva
 from .forms import QuartoForm, ClienteForm
 from datetime import datetime
@@ -124,13 +124,18 @@ def perfil_cliente(request, id):
     })
     
 def selecionar_datas(request):
-    cliente_id = request.GET.get('cliente_id')
     if request.method == 'POST':
         checkin = request.POST.get('checkin')
         checkout = request.POST.get('checkout')
-        
-        return redirect(f'/reservar_listar_hoteis/?cliente_id={cliente_id}&checkin={checkin}&checkout={checkout}')
-    return render(request, 'ReserVou/selecionar_datas.html', {'cliente_id': cliente_id})
+        cliente_id = request.POST.get('cliente_id')
+        if checkin and checkout and cliente_id:
+            # Redireciona para a listagem de hotéis, passando as datas e o cliente
+            url = reverse('reservar_listar_hoteis')
+            return redirect(f"{url}?cliente_id={cliente_id}&checkin={checkin}&checkout={checkout}")
+        else:
+            erro = "Preencha todas as datas."
+            return render(request, 'ReserVou/selecionar_datas.html', {'erro': erro, 'cliente_id': request.GET.get('cliente_id')})
+    return render(request, 'ReserVou/selecionar_datas.html', {'cliente_id': request.GET.get('cliente_id')})
 
 def reservar_listar_hoteis(request):
     cliente_id = request.GET.get('cliente_id')
@@ -153,14 +158,13 @@ def listar_quartos(request, hotel_id):
 
     quartos_disponiveis = []
 
-    
     if checkin and checkout and checkin != 'None' and checkout != 'None':
-        # Converte as datas de string para objeto date
         checkin_date = datetime.strptime(checkin, '%Y-%m-%d').date()
         checkout_date = datetime.strptime(checkout, '%Y-%m-%d').date()
 
-        
+        # Corrigido: só exclui quartos com reservas ativas que conflitam com o período
         quartos_disponiveis = Quarto.objects.filter(hotel=hotel).exclude(
+            reservas__status='ativa',
             reservas__check_in__lt=checkout_date,
             reservas__check_out__gt=checkin_date
         )
@@ -261,6 +265,7 @@ def fazer_pagamento(request):
         dias = (data_out - data_in).days
         total = dias * quarto.preco_diaria
 
+        from .models import Pagamento
         context = {
             'cliente': cliente,
             'hotel': hotel,
@@ -268,6 +273,7 @@ def fazer_pagamento(request):
             'checkin': checkin,
             'checkout': checkout,
             'total': total,
+            'metodos_pagamento': Pagamento.METODO_ESCOLHIDO,
         }
 
         return render(request, 'ReserVou/fazer_pagamento.html', context)

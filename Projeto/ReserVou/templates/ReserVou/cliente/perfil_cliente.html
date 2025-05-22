@@ -74,8 +74,8 @@
             </div>
         </div>
 
-        <a href="{% url 'reservar_listar_hoteis' %}?cliente_id={{ cliente.id }}" class="btn btn-success">
-            <span class="glyphicon glyphicon-plus-sign"></span> Fazer Nova Reserva
+        <a href="{% url 'selecionar_datas' %}?cliente_id={{ cliente.id }}" class="btn btn-success" style="margin-bottom: 20px;">
+            <span class="glyphicon glyphicon-calendar"></span> Fazer nova reserva
         </a>
         <a href="{% url 'editar_cliente' id=cliente.id %}" class="btn btn-primary btn-sm">
             <span class="glyphicon glyphicon-pencil"></span> Editar Perfil

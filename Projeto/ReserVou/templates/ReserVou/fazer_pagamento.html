@@ -47,9 +47,9 @@
                 <label for="tipo_pagamento" class="control-label"><strong>Tipo de pagamento:</strong></label>
                 <select name="tipo_pagamento" id="tipo_pagamento" class="form-control" required>
                     <option value="" disabled selected>Selecione</option>
-                    <option value="Cartão de Crédito">Cartão de Crédito</option>
-                    <option value="Pix">Pix</option>
-                    <option value="Dinheiro">Dinheiro</option>
+                    {% for value, label in metodos_pagamento %}
+                        <option value="{{ label }}">{{ label }}</option>
+                    {% endfor %}
                 </select>
             </div>
 

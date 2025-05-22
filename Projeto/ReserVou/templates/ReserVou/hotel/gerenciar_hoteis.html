@@ -55,7 +55,7 @@
                             <td>R$ {{ quarto.preco_diaria }}</td>
                             <td>
                                 <a href="{% url 'editar_quarto' quarto.id %}" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
-                                <a href="{% url 'deletar_quarto' quarto.id %}" class="btn btn-danger btn-xs" onclick="return confirm('Tem certeza que deseja deletar este quarto?');"><span class="glyphicon glyphicon-trash"></span> Deletar</a>
+                                <a href="{% url 'deletar_quarto' quarto.id %}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Deletar</a>
                             </td>
                         </tr>
                         {% endfor %}

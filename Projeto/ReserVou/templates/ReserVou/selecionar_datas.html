@@ -8,6 +8,9 @@
 <body>
     <div class="container">
         <h2>Escolha as datas da sua reserva</h2>
+        {% if erro %}
+            <div class="alert alert-danger">{{ erro }}</div>
+        {% endif %}
         <form method="post">
             {% csrf_token %}
             <input type="hidden" name="cliente_id" value="{{ cliente_id }}">

@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.   
+   
 class Hotel (models.Model):
     nome = models.CharField(max_length = 100, null = False, blank = False)
     endereco = models.CharField(max_length = 150, null = False, blank = False)

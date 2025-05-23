@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ReserVou import views
-from ReserVou.views import paginaInicial, gerenciarHoteis
+from ReserVou.views import paginaInicial, gerenciarHoteis, cadastrarHotel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,7 +28,7 @@ urlpatterns = [
     path('hoteis/', gerenciarHoteis.as_view(), name = 'gerenciar_hoteis'),
     path('hotel/<int:hotel_id>/quarto/cadastrar/', views.cadastrar_quarto, name = 'cadastrar_quarto'),
     path('hotel/<int:hotel_id>/quartos/', views.listar_quartos, name = 'listar_quartos'),
-    path('hoteis/cadastrar', views.cadastrar_hotel, name = 'cadastrar_hotel'),
+    path('hoteis/cadastrar', cadastrarHotel.as_view(), name = 'cadastrar_hotel'),
     path('editar_hotel/<int:hotel_id>/', views.editar_hotel, name = 'editar_hotel'),
     path('deletar_hotel/<int:hotel_id>/', views.deletar_hotel, name = 'deletar_hotel'),
     path('editar_quarto/<int:quarto_id>/', views.editar_quarto, name = 'editar_quarto'),

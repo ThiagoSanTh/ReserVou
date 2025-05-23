@@ -1,37 +1,70 @@
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.views import View
+
 from .models import Hotel, Quarto, Cliente, Reserva
 from .forms import QuartoForm, ClienteForm
 from datetime import datetime
 
 # Create your views here.
 
+# -------------- Página Inicial ----------------
+#---------------Codgo novo (CBV)----------------
+class paginaInicial(ListView):
+    model = Hotel
+    template_name = 'ReserVou/pagina_inicial.html'
+    context_object_name = 'hoteis'
 
-def pagina_inicial(request):
-    clientes = Cliente.objects.all()
-    hoteis = Hotel.objects.all()
-    return render(request, 'ReserVou/pagina_inicial.html', {'clientes': clientes, 'hoteis': hoteis})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['clientes'] = Cliente.objects.all()
+        return context
 
-#Hotel
+#----------Codgo antigo (FBV)----------------------
+#def pagina_inicial(request):
+#    clientes = Cliente.objects.all()
+#    hoteis = Hotel.objects.all()
+#    return render(request, 'ReserVou/pagina_inicial.html', {'clientes': clientes, 'hoteis': hoteis})
 
-def gerenciar_hoteis(request):
-    hoteis = Hotel.objects.prefetch_related('quarto').all()
-    return render(request, 'ReserVou/hotel/gerenciar_hoteis.html', {'hoteis': hoteis})
+#--------------------Hotel------------------------
+#-----------------Codgo novo (CBV)----------------
+class gerenciarHoteis(ListView):
+    model = Hotel
+    template_name = 'ReserVou/hotel/gerenciar_hoteis.html'
+    context_object_name = 'hoteis'
 
-def cadastrar_hotel(request):
-    if request.method == 'POST':
-        nome = request.POST.get('nome')
-        endereco = request.POST.get('endereco')
+    def get_queryset(self):
+        return Hotel.objects.prefetch_related('quarto').all()
 
-        if nome and endereco:
-            Hotel.objects.create(nome=nome, endereco=endereco)
-            return redirect('gerenciar_hoteis')
-        else:
-            erro = "Todos os campos são obrigatórios."
-            return render(request, 'ReserVou/hotel/cadastrar_hotel.html', {'erro': erro})
+#----------------Codgo antigo (FBV)----------------
+#def gerenciar_hoteis(request):
+#    hoteis = Hotel.objects.prefetch_related('quarto').all()
+#    return render(request, 'ReserVou/hotel/gerenciar_hoteis.html', {'hoteis': hoteis})
 
-    return render(request, 'ReserVou/hotel/cadastrar_hotel.html')
+#-----------------Codgo novo (CBV)----------------
+class cadastrarHotel(CreateView):
+    model = Hotel
+    fields = ['nome', 'endereco']
+    template_name = 'ReserVou/hotel/cadastrar_hotel.html'
+    success_url = reverse_lazy('gerenciar_hoteis')
 
+#-----------------Codgo antigo (FBV)----------------
+#def cadastrar_hotel(request):
+#    if request.method == 'POST':
+#        nome = request.POST.get('nome')
+#        endereco = request.POST.get('endereco')
+#
+#        if nome and endereco:
+#            Hotel.objects.create(nome=nome, endereco=endereco)
+#            return redirect('gerenciar_hoteis')
+#        else:
+#            erro = "Todos os campos são obrigatórios."
+#            return render(request, 'ReserVou/hotel/cadastrar_hotel.html', {'erro': erro})
+#
+#    return render(request, 'ReserVou/hotel/cadastrar_hotel.html')
+
+#-----------------Codgo antigo (FBV)----------------
 def editar_hotel(request, hotel_id):
     hotel = get_object_or_404(Hotel, id=hotel_id)
     if request.method == 'POST':
@@ -47,6 +80,8 @@ def editar_hotel(request, hotel_id):
             return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel, 'erro': erro})
     return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel})
 
+
+#-----------------Codgo antigo (FBV)----------------
 def deletar_hotel(request, hotel_id):
     hotel = get_object_or_404(Hotel, id=hotel_id)
     if request.method == 'POST':
@@ -54,6 +89,8 @@ def deletar_hotel(request, hotel_id):
         return redirect('gerenciar_hoteis')
     return render(request, 'ReserVou/hotel/confirmar_deletar_hotel.html', {'hotel': hotel})
 
+
+#-----------------Codgo antigo (FBV)----------------
 def cadastrar_quarto(request, hotel_id):
     hotel = Hotel.objects.get(id=hotel_id)
 
@@ -70,6 +107,7 @@ def cadastrar_quarto(request, hotel_id):
     return render(request, 'ReserVou/hotel/cadastrar_quarto.html', {'form': form, 'hotel': hotel})
 
 
+#-----------------Codgo antigo (FBV)----------------
 def editar_quarto(request, quarto_id):
     quarto = get_object_or_404(Quarto, id=quarto_id)
     if request.method == 'POST':
@@ -90,6 +128,7 @@ def editar_quarto(request, quarto_id):
     return render(request, 'ReserVou/hotel/editar_quarto.html', {'quarto': quarto})
 
 
+#-----------------Codgo antigo (FBV)----------------
 def deletar_quarto(request, quarto_id):
     quarto = get_object_or_404(Quarto, id=quarto_id)
     if request.method == 'POST':
@@ -99,6 +138,7 @@ def deletar_quarto(request, quarto_id):
     
 #Cliente 
 
+#-----------------Codgo antigo (FBV)----------------
 def cadastrar_cliente(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
@@ -113,7 +153,9 @@ def cadastrar_cliente(request):
             return render(request, 'ReserVou/cliente/cadastrar_cliente.html', {'erro': erro})
 
     return render(request, 'ReserVou/cliente/cadastrar_cliente.html')
-            
+
+
+#-----------------Codgo antigo (FBV)----------------           
 def perfil_cliente(request, id):
     cliente = Cliente.objects.get(id = id)
     reservas = Reserva.objects.filter(cliente = cliente).select_related('quarto', 'hotel')
@@ -122,7 +164,9 @@ def perfil_cliente(request, id):
         'cliente': cliente,
         'reservas': reservas,
     })
-    
+
+
+#-----------------Codgo antigo (FBV)----------------
 def selecionar_datas(request):
     if request.method == 'POST':
         checkin = request.POST.get('checkin')
@@ -137,6 +181,8 @@ def selecionar_datas(request):
             return render(request, 'ReserVou/selecionar_datas.html', {'erro': erro, 'cliente_id': request.GET.get('cliente_id')})
     return render(request, 'ReserVou/selecionar_datas.html', {'cliente_id': request.GET.get('cliente_id')})
 
+
+#-----------------Codgo antigo (FBV)----------------
 def reservar_listar_hoteis(request):
     cliente_id = request.GET.get('cliente_id')
     checkin = request.GET.get('checkin')
@@ -149,7 +195,9 @@ def reservar_listar_hoteis(request):
         'checkout': checkout,
     }
     return render(request, 'ReserVou/hotel/reservar_listar_hoteis.html', context)
-    
+
+
+#-----------------Codgo antigo (FBV)----------------
 def listar_quartos(request, hotel_id):
     hotel = get_object_or_404(Hotel, id=hotel_id)
     cliente_id = request.GET.get('cliente_id')
@@ -178,6 +226,8 @@ def listar_quartos(request, hotel_id):
     }
     return render(request, 'ReserVou/hotel/listar_quartos.html', context)
 
+
+#-----------------Codgo antigo (FBV)----------------
 def fazer_reserva(request, quarto_id):
     cliente_id = request.GET.get('cliente_id')
     checkin = request.GET.get('checkin')
@@ -204,6 +254,8 @@ def fazer_reserva(request, quarto_id):
 
     return render(request, 'ReserVou/fazer_reserva.html', context)
 
+
+#-----------------Codgo antigo (FBV)----------------
 def fazer_pagamento(request):
     if request.method == 'POST':
         cliente_id = request.POST.get('cliente_id')
@@ -278,6 +330,8 @@ def fazer_pagamento(request):
 
         return render(request, 'ReserVou/fazer_pagamento.html', context)
 
+
+#-----------------Codgo antigo (FBV)----------------
 def editar_cliente(request, id):
     cliente = get_object_or_404(Cliente, id=id)
     if request.method == 'POST':
@@ -295,6 +349,8 @@ def editar_cliente(request, id):
             return render(request, 'ReserVou/cliente/editar_cliente.html', {'cliente': cliente, 'erro': erro})
     return render(request, 'ReserVou/cliente/editar_cliente.html', {'cliente': cliente})
 
+
+#-----------------Codgo antigo (FBV)----------------
 def deletar_cliente(request, id):
     cliente = get_object_or_404(Cliente, id=id)
     if request.method == 'POST':
@@ -302,6 +358,8 @@ def deletar_cliente(request, id):
         return redirect('home')
     return render(request, 'ReserVou/cliente/confirmar_deletar_cliente.html', {'cliente': cliente})
 
+
+#-----------------Codgo antigo (FBV)----------------
 def cancelar_reserva(request, reserva_id):
     reserva = get_object_or_404(Reserva, id=reserva_id)
     if request.method == 'POST':

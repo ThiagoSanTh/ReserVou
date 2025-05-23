@@ -17,10 +17,24 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ReserVou import views
+from ReserVou.views import paginaInicial, gerenciarHoteis
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.pagina_inicial, name='home'),
+    path('', paginaInicial.as_view(), name='home'),
+
+        #hotel
+    
+    path('hoteis/', gerenciarHoteis.as_view(), name = 'gerenciar_hoteis'),
+    path('hotel/<int:hotel_id>/quarto/cadastrar/', views.cadastrar_quarto, name = 'cadastrar_quarto'),
+    path('hotel/<int:hotel_id>/quartos/', views.listar_quartos, name = 'listar_quartos'),
+    path('hoteis/cadastrar', views.cadastrar_hotel, name = 'cadastrar_hotel'),
+    path('editar_hotel/<int:hotel_id>/', views.editar_hotel, name = 'editar_hotel'),
+    path('deletar_hotel/<int:hotel_id>/', views.deletar_hotel, name = 'deletar_hotel'),
+    path('editar_quarto/<int:quarto_id>/', views.editar_quarto, name = 'editar_quarto'),
+    path('deletar_quarto/<int:quarto_id>/', views.deletar_quarto, name = 'deletar_quarto'),
+    path('reserva/<int:reserva_id>/cancelar/', views.cancelar_reserva, name='cancelar_reserva'),
+    path('selecionar_datas/', views.selecionar_datas, name='selecionar_datas'),
 
         #cliente
 
@@ -31,17 +45,5 @@ urlpatterns = [
     path('clientes/novo/', views.cadastrar_cliente, name = 'cadastrar_cliente'),
     path('deletar_cliente/<int:id>/', views.deletar_cliente, name = 'deletar_cliente'),
     path('editar_cliente/<int:id>/', views.editar_cliente, name = 'editar_cliente'),
-        
-        #hotel
-    
-    path('hoteis/', views.gerenciar_hoteis, name = 'gerenciar_hoteis'),
-    path('hotel/<int:hotel_id>/quarto/cadastrar/', views.cadastrar_quarto, name = 'cadastrar_quarto'),
-    path('hotel/<int:hotel_id>/quartos/', views.listar_quartos, name = 'listar_quartos'),
-    path('hoteis/cadastrar', views.cadastrar_hotel, name = 'cadastrar_hotel'),
-    path('editar_hotel/<int:hotel_id>/', views.editar_hotel, name = 'editar_hotel'),
-    path('deletar_hotel/<int:hotel_id>/', views.deletar_hotel, name = 'deletar_hotel'),
-    path('editar_quarto/<int:quarto_id>/', views.editar_quarto, name = 'editar_quarto'),
-    path('deletar_quarto/<int:quarto_id>/', views.deletar_quarto, name = 'deletar_quarto'),
-    path('reserva/<int:reserva_id>/cancelar/', views.cancelar_reserva, name='cancelar_reserva'),
-    path('selecionar_datas/', views.selecionar_datas, name='selecionar_datas'),
+
 ]

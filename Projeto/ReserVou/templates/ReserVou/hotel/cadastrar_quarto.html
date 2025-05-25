@@ -42,10 +42,10 @@
 
                     <div class="form-group">
                         <label for="tipo">Tipo:</label>
-                        <select class="form-control" id="tipo" name="tipo">
-                            <option value="tradicional">Tradicional</option>
-                            <option value="premium">Premium</option>
-                            <option value="luxo">Luxo</option>
+                        <select type="text" class="form-control" id="tipo" name="tipo" value="{{ quarto.tipo }}" required>
+                            <option value = "tradicional" {% if quarto.tipo == 'tradicional' %}selected{% endif %}>Tradicional</option>
+                            <option value = "premium" {% if quarto.tipo == 'premium' %}selected{% endif %}>Premium</option>
+                            <option value = "luxo" {% if quarto.tipo == 'luxo' %}selected{% endif %}>Luxo</option>
                         </select>
                     </div>
 

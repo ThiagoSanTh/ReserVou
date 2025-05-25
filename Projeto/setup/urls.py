@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ReserVou import views
-from ReserVou.views import paginaInicial, gerenciarHoteis, cadastrarHotel
+from ReserVou.views import paginaInicial, gerenciarHoteis, cadastrarHotel, editarHotel, deletarHotel, editarQuarto, deletarQuarto, cadastrarQuarto
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,13 +26,13 @@ urlpatterns = [
         #hotel
     
     path('hoteis/', gerenciarHoteis.as_view(), name = 'gerenciar_hoteis'),
-    path('hotel/<int:hotel_id>/quarto/cadastrar/', views.cadastrar_quarto, name = 'cadastrar_quarto'),
+    path('hotel/<int:hotel_id>/quarto/cadastrar/', cadastrarQuarto.as_view(), name = 'cadastrar_quarto'),
     path('hotel/<int:hotel_id>/quartos/', views.listar_quartos, name = 'listar_quartos'),
     path('hoteis/cadastrar', cadastrarHotel.as_view(), name = 'cadastrar_hotel'),
-    path('editar_hotel/<int:hotel_id>/', views.editar_hotel, name = 'editar_hotel'),
-    path('deletar_hotel/<int:hotel_id>/', views.deletar_hotel, name = 'deletar_hotel'),
-    path('editar_quarto/<int:quarto_id>/', views.editar_quarto, name = 'editar_quarto'),
-    path('deletar_quarto/<int:quarto_id>/', views.deletar_quarto, name = 'deletar_quarto'),
+    path('editar_hotel/<int:pk>/', editarHotel.as_view(), name = 'editar_hotel'),
+    path('deletar_hotel/<int:pk>/', deletarHotel.as_view(), name = 'deletar_hotel'),
+    path('editar_quarto/<int:quarto_id>/', editarQuarto.as_view(), name = 'editar_quarto'),
+    path('deletar_quarto/<int:quarto_id>/', deletarQuarto.as_view(), name = 'deletar_quarto'),
     path('reserva/<int:reserva_id>/cancelar/', views.cancelar_reserva, name='cancelar_reserva'),
     path('selecionar_datas/', views.selecionar_datas, name='selecionar_datas'),
 

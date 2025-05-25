@@ -64,78 +64,139 @@ class cadastrarHotel(CreateView):
 #
 #    return render(request, 'ReserVou/hotel/cadastrar_hotel.html')
 
-#-----------------Codgo antigo (FBV)----------------
-def editar_hotel(request, hotel_id):
-    hotel = get_object_or_404(Hotel, id=hotel_id)
-    if request.method == 'POST':
-        nome = request.POST.get('nome')
-        endereco = request.POST.get('endereco')
-        if nome and endereco:
-            hotel.nome = nome
-            hotel.endereco = endereco
-            hotel.save()
-            return redirect('gerenciar_hoteis')
-        else:
-            erro = "Todos os campos são obrigatórios."
-            return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel, 'erro': erro})
-    return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel})
+#-----------------Codgo novo (CBV)----------------
+class editarHotel(UpdateView):
+    model = Hotel
+    fields = ['nome', 'endereco']
+    template_name = 'ReserVou/hotel/editar_hotel.html'
+    success_url = reverse_lazy('home')
+
 
 
 #-----------------Codgo antigo (FBV)----------------
-def deletar_hotel(request, hotel_id):
-    hotel = get_object_or_404(Hotel, id=hotel_id)
-    if request.method == 'POST':
-        hotel.delete()
-        return redirect('gerenciar_hoteis')
-    return render(request, 'ReserVou/hotel/confirmar_deletar_hotel.html', {'hotel': hotel})
+#def editar_hotel(request, hotel_id):
+#    hotel = get_object_or_404(Hotel, id=hotel_id)
+#    if request.method == 'POST':
+#        nome = request.POST.get('nome')
+#        endereco = request.POST.get('endereco')
+#        if nome and endereco:
+#            hotel.nome = nome
+#            hotel.endereco = endereco
+#            hotel.save()
+#            return redirect('gerenciar_hoteis')
+#        else:
+#            erro = "Todos os campos são obrigatórios."
+#            return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel, 'erro': erro})
+#    return render(request, 'ReserVou/hotel/editar_hotel.html', {'hotel': hotel})
 
-
-#-----------------Codgo antigo (FBV)----------------
-def cadastrar_quarto(request, hotel_id):
-    hotel = Hotel.objects.get(id=hotel_id)
-
-    if request.method == 'POST':
-        form = QuartoForm(request.POST)
-        if form.is_valid():
-            novo_quarto = form.save(commit=False)
-            novo_quarto.hotel = hotel
-            novo_quarto.save()
-            return redirect('gerenciar_hoteis')
-    else:
-        form = QuartoForm()
-
-    return render(request, 'ReserVou/hotel/cadastrar_quarto.html', {'form': form, 'hotel': hotel})
-
-
-#-----------------Codgo antigo (FBV)----------------
-def editar_quarto(request, quarto_id):
-    quarto = get_object_or_404(Quarto, id=quarto_id)
-    if request.method == 'POST':
-        numero = request.POST.get('numero')
-        tipo = request.POST.get('tipo')
-        preco_diaria = request.POST.get('preco_diaria')
-        status = request.POST.get('status')
-        if numero and tipo and preco_diaria and status:
-            quarto.numero = numero
-            quarto.tipo = tipo
-            quarto.preco_diaria = preco_diaria
-            quarto.status = status
-            quarto.save()
-            return redirect('gerenciar_hoteis')
-        else:
-            erro = "Todos os campos são obrigatórios."
-            return render(request, 'ReserVou/hotel/editar_quarto.html', {'quarto': quarto, 'erro': erro})
-    return render(request, 'ReserVou/hotel/editar_quarto.html', {'quarto': quarto})
-
-
-#-----------------Codgo antigo (FBV)----------------
-def deletar_quarto(request, quarto_id):
-    quarto = get_object_or_404(Quarto, id=quarto_id)
-    if request.method == 'POST':
-        quarto.delete()
-        return redirect('gerenciar_hoteis')
-    return render(request, 'ReserVou/hotel/confirmar_deletar_quarto.html', {'quarto': quarto})
+#-----------------Codgo novo (CBV)----------------
+class deletarHotel(DeleteView):
+    model = Hotel
+    template_name = 'ReserVou/hotel/confirmar_deletar_hotel.html'
+    success_url = reverse_lazy('home')
     
+
+#-----------------Codgo antigo (FBV)----------------
+#def deletar_hotel(request, hotel_id):
+#    hotel = get_object_or_404(Hotel, id=hotel_id)
+#    if request.method == 'POST':
+#        hotel.delete()
+#        return redirect('gerenciar_hoteis')
+#    return render(request, 'ReserVou/hotel/confirmar_deletar_hotel.html', {'hotel': hotel})
+
+#Quartos
+
+#-----------------Codgo novo (CBV)----------------
+class cadastrarQuarto(CreateView):
+    model = Quarto
+    form_class = QuartoForm
+    template_name = 'ReserVou/hotel/cadastrar_quarto.html'
+    success_url = reverse_lazy('gerenciar_hoteis')
+
+    def form_valid(self, form):
+        hotel = get_object_or_404(Hotel, id=self.kwargs['hotel_id'])
+        form.instance.hotel = hotel
+        return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['hotel'] = get_object_or_404(Hotel, id=self.kwargs['hotel_id'])
+        return context
+
+#-----------------Codgo antigo (FBV)----------------
+#def cadastrar_quarto(request, hotel_id):
+#    hotel = Hotel.objects.get(id=hotel_id)
+#
+#    if request.method == 'POST':
+#        form = QuartoForm(request.POST)
+#        if form.is_valid():
+#            novo_quarto = form.save(commit=False)
+#            novo_quarto.hotel = hotel
+#            novo_quarto.save()
+#            return redirect('gerenciar_hoteis')
+#    else:
+#        form = QuartoForm()
+#
+#    return render(request, 'ReserVou/hotel/cadastrar_quarto.html', {'form': form, 'hotel': hotel})
+
+#-----------------Codgo novo (CBV)----------------
+class editarQuarto(UpdateView):
+    model = Quarto
+    form_class = QuartoForm
+    template_name = 'ReserVou/hotel/editar_quarto.html'
+    success_url = reverse_lazy('gerenciar_hoteis')
+
+    def get(self, request, quarto_id):
+        quarto = get_object_or_404(Quarto, id=quarto_id)
+        return render(request, self.template_name, {'quarto': quarto})
+    
+    def post(self, request, quarto_id):
+        quarto = get_object_or_404(Quarto, id=quarto_id)
+        form = self.form_class(request.POST, instance=quarto)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('gerenciar_hoteis')
+        else:
+            return render(request, self.template_name, {'quarto': quarto, 'form': form})
+
+#-----------------Codgo antigo (FBV)----------------
+#def editar_quarto(request, quarto_id):
+#    quarto = get_object_or_404(Quarto, id=quarto_id)
+#    if request.method == 'POST':
+#        numero = request.POST.get('numero')
+#        tipo = request.POST.get('tipo')
+#        preco_diaria = request.POST.get('preco_diaria')
+#        status = request.POST.get('status')
+#        if numero and tipo and preco_diaria and status:
+#            quarto.numero = numero
+#            quarto.tipo = tipo
+#            quarto.preco_diaria = preco_diaria
+#            quarto.status = status
+#            quarto.save()
+#            return redirect('gerenciar_hoteis')
+#        else:
+#            erro = "Todos os campos são obrigatórios."
+#            return render(request, 'ReserVou/hotel/editar_quarto.html', {'quarto': quarto, 'erro': erro})
+#    return render(request, 'ReserVou/hotel/editar_quarto.html', {'quarto': quarto})
+
+#-----------------Codgo novo (CBV)----------------
+class deletarQuarto(DeleteView):
+    model = Quarto
+    template_name = 'ReserVou/hotel/confirmar_deletar_quarto.html'
+    success_url = reverse_lazy('gerenciar_hoteis')
+    pk_url_kwarg = 'quarto_id'
+
+#-----------------Codgo antigo (FBV)----------------
+#def deletar_quarto(request, quarto_id):
+#    quarto = get_object_or_404(Quarto, id=quarto_id)
+#    if request.method == 'POST':
+#        quarto.delete()
+#        return redirect('gerenciar_hoteis')
+#    return render(request, 'ReserVou/hotel/confirmar_deletar_quarto.html', {'quarto': quarto})
+    
+
+
 #Cliente 
 
 #-----------------Codgo antigo (FBV)----------------

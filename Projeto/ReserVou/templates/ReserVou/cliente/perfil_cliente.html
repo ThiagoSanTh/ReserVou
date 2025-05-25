@@ -74,13 +74,13 @@
             </div>
         </div>
 
-        <a href="{% url 'selecionar_datas' %}?cliente_id={{ cliente.id }}" class="btn btn-success" style="margin-bottom: 20px;">
+        <a href="{% url 'selecionar_datas' %}?cliente_id={{ cliente.id }}" class="btn btn-success" style="margin-left: 5px;">
             <span class="glyphicon glyphicon-calendar"></span> Fazer nova reserva
         </a>
-        <a href="{% url 'editar_cliente' id=cliente.id %}" class="btn btn-primary btn-sm">
+        <a href="{% url 'editar_cliente' pk=cliente.id %}" class="btn btn-primary btn-sm" style="margin-left: 5px;">
             <span class="glyphicon glyphicon-pencil"></span> Editar Perfil
         </a>
-        <a href="{% url 'deletar_cliente' id=cliente.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">
+        <a href="{% url 'deletar_cliente' pk=cliente.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">
             <span class="glyphicon glyphicon-trash"></span> Deletar Perfil
         </a>
     </div>

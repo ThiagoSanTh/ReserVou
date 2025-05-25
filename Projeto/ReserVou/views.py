@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -142,16 +142,17 @@ class cadastrarQuarto(CreateView):
 #-----------------Codgo novo (CBV)----------------
 class editarQuarto(UpdateView):
     model = Quarto
+    fields = ['numero', 'tipo', 'preco_diaria', 'status']
     form_class = QuartoForm
     template_name = 'ReserVou/hotel/editar_quarto.html'
     success_url = reverse_lazy('gerenciar_hoteis')
 
-    def get(self, request, quarto_id):
-        quarto = get_object_or_404(Quarto, id=quarto_id)
+    def get(self, request, pk):
+        quarto = get_object_or_404(Quarto, id=pk)
         return render(request, self.template_name, {'quarto': quarto})
     
-    def post(self, request, quarto_id):
-        quarto = get_object_or_404(Quarto, id=quarto_id)
+    def post(self, request, pk):
+        quarto = get_object_or_404(Quarto, id=pk)
         form = self.form_class(request.POST, instance=quarto)
         
         if form.is_valid():
@@ -185,7 +186,7 @@ class deletarQuarto(DeleteView):
     model = Quarto
     template_name = 'ReserVou/hotel/confirmar_deletar_quarto.html'
     success_url = reverse_lazy('gerenciar_hoteis')
-    pk_url_kwarg = 'quarto_id'
+    
 
 #-----------------Codgo antigo (FBV)----------------
 #def deletar_quarto(request, quarto_id):
@@ -199,33 +200,91 @@ class deletarQuarto(DeleteView):
 
 #Cliente 
 
+#-----------------Codgo novo (CBV)------------------
+class cadastrarCliente(CreateView):
+    model = Cliente
+    form_class = ClienteForm
+    template_name = 'ReserVou/cliente/cadastrar_cliente.html'
+    success_url = reverse_lazy('home')
+
 #-----------------Codgo antigo (FBV)----------------
-def cadastrar_cliente(request):
-    if request.method == 'POST':
-        nome = request.POST.get('nome')
-        email = request.POST.get('email')
-        telefone = request.POST.get('telefone')
+#def cadastrar_cliente(request):
+#    if request.method == 'POST':
+#        nome = request.POST.get('nome')
+#        email = request.POST.get('email')
+#        telefone = request.POST.get('telefone')
+#
+#        if nome and email and telefone:
+#            Cliente.objects.create(nome=nome, email=email, telefone=telefone)
+#            return redirect('home')
+#        else:
+#            erro = "Todos os campos são obrigatórios."
+#            return render(request, 'ReserVou/cliente/cadastrar_cliente.html', {'erro': erro})
+#
+#    return render(request, 'ReserVou/cliente/cadastrar_cliente.html')
 
-        if nome and email and telefone:
-            Cliente.objects.create(nome=nome, email=email, telefone=telefone)
-            return redirect('home')
-        else:
-            erro = "Todos os campos são obrigatórios."
-            return render(request, 'ReserVou/cliente/cadastrar_cliente.html', {'erro': erro})
+#-----------------Codgo novo (CBV)----------------
+class editarCliente(UpdateView):
+    model = Cliente
+    form_class = ClienteForm
+    template_name = 'ReserVou/cliente/editar_cliente.html'
+    success_url = reverse_lazy('perfil_cliente')
 
-    return render(request, 'ReserVou/cliente/cadastrar_cliente.html')
+#-----------------Codgo antigo (FBV)----------------
+#def editar_cliente(request, id):
+#    cliente = get_object_or_404(Cliente, id=id)
+#    if request.method == 'POST':
+#        nome = request.POST.get('nome')
+#        email = request.POST.get('email')
+#        telefone = request.POST.get('telefone')
+#        if nome and email and telefone:
+#            cliente.nome = nome
+#            cliente.email = email
+#            cliente.telefone = telefone
+#            cliente.save()
+#            return redirect('perfil_cliente', id=cliente.id)
+#        else:
+#            erro = "Todos os campos são obrigatórios."
+#            return render(request, 'ReserVou/cliente/editar_cliente.html', {'cliente': cliente, 'erro': erro})
+#    return render(request, 'ReserVou/cliente/editar_cliente.html', {'cliente': cliente})
 
-
-#-----------------Codgo antigo (FBV)----------------           
-def perfil_cliente(request, id):
-    cliente = Cliente.objects.get(id = id)
-    reservas = Reserva.objects.filter(cliente = cliente).select_related('quarto', 'hotel')
+#-----------------Codgo novo (CBV)------------------
+class deletarCliente(DeleteView):
+    model = Cliente
+    template_name = 'ReserVou/cliente/confirmar_deletar_cliente.html'
+    success_url = reverse_lazy('home')
     
-    return render(request, 'ReserVou/cliente/perfil_cliente.html', {
-        'cliente': cliente,
-        'reservas': reservas,
-    })
 
+#-----------------Codgo antigo (FBV)----------------
+#def deletar_cliente(request, id):
+#    cliente = get_object_or_404(Cliente, id=id)
+#    if request.method == 'POST':
+#        cliente.delete()
+#        return redirect('home')
+#    return render(request, 'ReserVou/cliente/confirmar_deletar_cliente.html', {'cliente': cliente})
+
+#-----------------Codgo novo (CBV)----------------
+class perfilCliente(DetailView):
+    model = Cliente
+    template_name = 'ReserVou/cliente/perfil_cliente.html'
+    context_object_name = 'cliente'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cliente = self.get_object()
+        context['reservas'] = Reserva.objects.filter(cliente=cliente).select_related('quarto', 'hotel')
+        return context
+#-----------------Codgo antigo (FBV)----------------           
+#def perfil_cliente(request, id):
+#    cliente = Cliente.objects.get(id = id)
+#    reservas = Reserva.objects.filter(cliente = cliente).select_related('quarto', 'hotel')
+#    
+#    return render(request, 'ReserVou/cliente/perfil_cliente.html', {
+#        'cliente': cliente,
+#        'reservas': reservas,
+#    })
+
+#Interface
 
 #-----------------Codgo antigo (FBV)----------------
 def selecionar_datas(request):
@@ -242,7 +301,6 @@ def selecionar_datas(request):
             return render(request, 'ReserVou/selecionar_datas.html', {'erro': erro, 'cliente_id': request.GET.get('cliente_id')})
     return render(request, 'ReserVou/selecionar_datas.html', {'cliente_id': request.GET.get('cliente_id')})
 
-
 #-----------------Codgo antigo (FBV)----------------
 def reservar_listar_hoteis(request):
     cliente_id = request.GET.get('cliente_id')
@@ -256,7 +314,6 @@ def reservar_listar_hoteis(request):
         'checkout': checkout,
     }
     return render(request, 'ReserVou/hotel/reservar_listar_hoteis.html', context)
-
 
 #-----------------Codgo antigo (FBV)----------------
 def listar_quartos(request, hotel_id):
@@ -287,7 +344,6 @@ def listar_quartos(request, hotel_id):
     }
     return render(request, 'ReserVou/hotel/listar_quartos.html', context)
 
-
 #-----------------Codgo antigo (FBV)----------------
 def fazer_reserva(request, quarto_id):
     cliente_id = request.GET.get('cliente_id')
@@ -314,7 +370,6 @@ def fazer_reserva(request, quarto_id):
     }
 
     return render(request, 'ReserVou/fazer_reserva.html', context)
-
 
 #-----------------Codgo antigo (FBV)----------------
 def fazer_pagamento(request):
@@ -390,35 +445,6 @@ def fazer_pagamento(request):
         }
 
         return render(request, 'ReserVou/fazer_pagamento.html', context)
-
-
-#-----------------Codgo antigo (FBV)----------------
-def editar_cliente(request, id):
-    cliente = get_object_or_404(Cliente, id=id)
-    if request.method == 'POST':
-        nome = request.POST.get('nome')
-        email = request.POST.get('email')
-        telefone = request.POST.get('telefone')
-        if nome and email and telefone:
-            cliente.nome = nome
-            cliente.email = email
-            cliente.telefone = telefone
-            cliente.save()
-            return redirect('perfil_cliente', id=cliente.id)
-        else:
-            erro = "Todos os campos são obrigatórios."
-            return render(request, 'ReserVou/cliente/editar_cliente.html', {'cliente': cliente, 'erro': erro})
-    return render(request, 'ReserVou/cliente/editar_cliente.html', {'cliente': cliente})
-
-
-#-----------------Codgo antigo (FBV)----------------
-def deletar_cliente(request, id):
-    cliente = get_object_or_404(Cliente, id=id)
-    if request.method == 'POST':
-        cliente.delete()
-        return redirect('home')
-    return render(request, 'ReserVou/cliente/confirmar_deletar_cliente.html', {'cliente': cliente})
-
 
 #-----------------Codgo antigo (FBV)----------------
 def cancelar_reserva(request, reserva_id):

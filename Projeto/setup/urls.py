@@ -20,7 +20,9 @@ from ReserVou import views
 from ReserVou.views import (paginaInicial, 
                             gerenciarHoteis, cadastrarHotel, editarHotel, deletarHotel, 
                             editarQuarto, deletarQuarto, cadastrarQuarto, 
-                            cadastrarCliente, editarCliente, deletarCliente, perfilCliente)
+                            cadastrarCliente, editarCliente, deletarCliente, perfilCliente,
+                            selecionarDatas, reservarListarHoteis, listarQuartos, fazerReserva, fazerPagamento, cancelarReserva
+                            )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,18 +40,18 @@ urlpatterns = [
 
 
         #quarto
-    path('hotel/<int:hotel_id>/quartos/', views.listar_quartos, name = 'listar_quartos'),
-    path('hotel/<int:hotel_id>/quarto/cadastrar/', cadastrarQuarto.as_view(), name = 'cadastrar_quarto'),
+    path('hotel/<int:pk>/quartos/', listarQuartos.as_view(), name = 'listar_quartos'),
+    path('hotel/<int:pk>/quarto/cadastrar/', cadastrarQuarto.as_view(), name = 'cadastrar_quarto'),
     path('editar_quarto/<int:pk>/', editarQuarto.as_view(), name = 'editar_quarto'),
     path('deletar_quarto/<int:pk>/', deletarQuarto.as_view(), name = 'deletar_quarto'),
     
 
         #Interface
-    path('reserva/<int:quarto_id>/reservar/', views.fazer_reserva, name = 'fazer_reserva'),
-    path('reserva/<int:reserva_id>/cancelar/', views.cancelar_reserva, name='cancelar_reserva'),
-    path('selecionar_datas/', views.selecionar_datas, name='selecionar_datas'),
-    path('reserva/pagamento/', views.fazer_pagamento, name = 'fazer_pagamento'),
-    path('reservar_listar_hoteis/', views.reservar_listar_hoteis, name = 'reservar_listar_hoteis'),
+    path('reserva/<int:quarto_id>/reservar/', fazerReserva.as_view(), name = 'fazer_reserva'),
+    path('reserva/<int:reserva_id>/cancelar/', cancelarReserva.as_view(), name='cancelar_reserva'),
+    path('selecionar_datas/', selecionarDatas.as_view(), name='selecionar_datas'),
+    path('reserva/pagamento/', fazerPagamento.as_view(), name = 'fazer_pagamento'),
+    path('reservar_listar_hoteis/', reservarListarHoteis.as_view(), name = 'reservar_listar_hoteis'),
 
 
         #cliente

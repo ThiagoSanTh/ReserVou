@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
 
+
 from .models import Hotel, Quarto, Cliente, Reserva
 from .forms import QuartoForm, ClienteForm
 from datetime import datetime
@@ -286,99 +287,135 @@ class perfilCliente(DetailView):
 
 #Interface
 
-#-----------------Codgo antigo (FBV)----------------
-def selecionar_datas(request):
-    if request.method == 'POST':
+#-----------------Codgo novo (CBV)------------------
+class selecionarDatas(View):
+    template_name = 'ReserVou/selecionar_datas.html'
+
+    def get(self, request):
+        cliente_id = request.GET.get('cliente_id')
+        return render(request, self.template_name, {'cliente_id': cliente_id})
+    
+    def post(self, request):
         checkin = request.POST.get('checkin')
         checkout = request.POST.get('checkout')
         cliente_id = request.POST.get('cliente_id')
+
         if checkin and checkout and cliente_id:
-            # Redireciona para a listagem de hotéis, passando as datas e o cliente
             url = reverse('reservar_listar_hoteis')
             return redirect(f"{url}?cliente_id={cliente_id}&checkin={checkin}&checkout={checkout}")
         else:
             erro = "Preencha todas as datas."
-            return render(request, 'ReserVou/selecionar_datas.html', {'erro': erro, 'cliente_id': request.GET.get('cliente_id')})
-    return render(request, 'ReserVou/selecionar_datas.html', {'cliente_id': request.GET.get('cliente_id')})
+            return render(request, self.template_name, {'erro': erro, 'cliente_id': cliente_id})
 
 #-----------------Codgo antigo (FBV)----------------
-def reservar_listar_hoteis(request):
-    cliente_id = request.GET.get('cliente_id')
-    checkin = request.GET.get('checkin')
-    checkout = request.GET.get('checkout')
-    hoteis = Hotel.objects.all()
-    context = {
-        'hoteis': hoteis,
-        'cliente_id': cliente_id,
-        'checkin': checkin,
-        'checkout': checkout,
-    }
-    return render(request, 'ReserVou/hotel/reservar_listar_hoteis.html', context)
+#def selecionar_datas(request):
+#    if request.method == 'POST':
+#        checkin = request.POST.get('checkin')
+#        checkout = request.POST.get('checkout')
+#        cliente_id = request.POST.get('cliente_id')
+#        if checkin and checkout and cliente_id:
+#            # Redireciona para a listagem de hotéis, passando as datas e o cliente
+#            url = reverse('reservar_listar_hoteis')
+#            return redirect(f"{url}?cliente_id={cliente_id}&checkin={checkin}&checkout={checkout}")
+#        else:
+#            erro = "Preencha todas as datas."
+#            return render(request, 'ReserVou/selecionar_datas.html', {'erro': erro, 'cliente_id': request.GET.get('cliente_id')})
+#    return render(request, 'ReserVou/selecionar_datas.html', {'cliente_id': request.GET.get('cliente_id')})
 
-#-----------------Codgo antigo (FBV)----------------
-def listar_quartos(request, hotel_id):
-    hotel = get_object_or_404(Hotel, id=hotel_id)
-    cliente_id = request.GET.get('cliente_id')
-    checkin = request.GET.get('checkin')
-    checkout = request.GET.get('checkout')
+#-----------------Codgo novo (CBV)----------------
+class reservarListarHoteis(ListView):
+    model = Hotel
+    template_name = 'ReserVou/hotel/reservar_listar_hoteis.html'
+    context_object_name = 'hoteis'
 
-    quartos_disponiveis = []
-
-    if checkin and checkout and checkin != 'None' and checkout != 'None':
-        checkin_date = datetime.strptime(checkin, '%Y-%m-%d').date()
-        checkout_date = datetime.strptime(checkout, '%Y-%m-%d').date()
-
-        # Corrigido: só exclui quartos com reservas ativas que conflitam com o período
-        quartos_disponiveis = Quarto.objects.filter(hotel=hotel).exclude(
-            reservas__status='ativa',
-            reservas__check_in__lt=checkout_date,
-            reservas__check_out__gt=checkin_date
-        )
-
-    context = {
-        'hotel': hotel,
-        'cliente_id': cliente_id,
-        'checkin': checkin,
-        'checkout': checkout,
-        'quartos_disponiveis': quartos_disponiveis,
-    }
-    return render(request, 'ReserVou/hotel/listar_quartos.html', context)
-
-#-----------------Codgo antigo (FBV)----------------
-def fazer_reserva(request, quarto_id):
-    cliente_id = request.GET.get('cliente_id')
-    checkin = request.GET.get('checkin')
-    checkout = request.GET.get('checkout')
-
-    cliente = get_object_or_404(Cliente, id=cliente_id)
-    quarto = get_object_or_404(Quarto, id=quarto_id)
-    hotel = quarto.hotel
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'cliente_id': self.request.GET.get('cliente_id'),
+            'checkin': self.request.GET.get('checkin'),
+            'checkout': self.request.GET.get('checkout'),
+        })
+        return context
     
-    data_in = datetime.strptime(checkin, "%Y-%m-%d").date()
-    data_out = datetime.strptime(checkout, "%Y-%m-%d").date()
-    dias = (data_out - data_in).days
-    total = dias * quarto.preco_diaria
-
-    context = {
-        'cliente': cliente,
-        'hotel': hotel,
-        'quarto': quarto,
-        'checkin': checkin,
-        'checkout': checkout,
-        'total': total,
-    }
-
-    return render(request, 'ReserVou/fazer_reserva.html', context)
-
 #-----------------Codgo antigo (FBV)----------------
-def fazer_pagamento(request):
-    if request.method == 'POST':
-        cliente_id = request.POST.get('cliente_id')
-        quarto_id = request.POST.get('quarto_id')
-        checkin = request.POST.get('checkin')
-        checkout = request.POST.get('checkout')
-        tipo_pagamento = request.POST.get('tipo_pagamento')
+#def reservar_listar_hoteis(request):F
+#    cliente_id = request.GET.get('cliente_id')
+#    checkin = request.GET.get('checkin')
+#    checkout = request.GET.get('checkout')
+#    hoteis = Hotel.objects.all()
+#    context = {
+#        'hoteis': hoteis,
+#        'cliente_id': cliente_id,
+#        'checkin': checkin,
+#        'checkout': checkout,
+#    }
+#    return render(request, 'ReserVou/hotel/reservar_listar_hoteis.html', context)
+
+#-----------------Codgo novo (CBV)------------------
+class listarQuartos(ListView):
+    template_name = 'ReserVou/hotel/listar_quartos.html'
+
+    def get(self, request, pk):
+        hotel = get_object_or_404(Hotel, id=pk)
+        cliente_id = request.GET.get('cliente_id')
+        checkin = request.GET.get('checkin')
+        checkout = request.GET.get('checkout')
+
+        quartos_disponiveis = []
+        if checkin and checkout and checkin != 'None' and checkout != 'None':
+            checkin_date = datetime.strptime(checkin, '%Y-%m-%d').date()
+            checkout_date = datetime.strptime(checkout, '%Y-%m-%d').date()
+            quartos_disponiveis = Quarto.objects.filter(hotel=hotel).exclude(
+                reservas__status='ativa',
+                reservas__check_in__lt=checkout_date,
+                reservas__check_out__gt=checkin_date
+            )
+        context = {
+            'hotel': hotel,
+            'cliente_id': cliente_id,
+            'checkin': checkin,
+            'checkout': checkout,
+            'quartos_disponiveis': quartos_disponiveis,
+        }
+        return render(request, self.template_name, context)              
+            
+#-----------------Codgo antigo (FBV)----------------
+#def listar_quartos(request, hotel_id):
+#    hotel = get_object_or_404(Hotel, id=hotel_id)
+#    cliente_id = request.GET.get('cliente_id')
+#    checkin = request.GET.get('checkin')
+#    checkout = request.GET.get('checkout')
+#
+#    quartos_disponiveis = []
+#
+#    if checkin and checkout and checkin != 'None' and checkout != 'None':
+#        checkin_date = datetime.strptime(checkin, '%Y-%m-%d').date()
+#        checkout_date = datetime.strptime(checkout, '%Y-%m-%d').date()
+#
+#        # Corrigido: só exclui quartos com reservas ativas que conflitam com o período
+#        quartos_disponiveis = Quarto.objects.filter(hotel=hotel).exclude(
+#            reservas__status='ativa',
+#            reservas__check_in__lt=checkout_date,
+#            reservas__check_out__gt=checkin_date
+#        )
+#
+#    context = {
+#        'hotel': hotel,
+#        'cliente_id': cliente_id,
+#        'checkin': checkin,
+#        'checkout': checkout,
+#        'quartos_disponiveis': quartos_disponiveis,
+#    }
+#    return render(request, 'ReserVou/hotel/listar_quartos.html', context)
+
+#-----------------Codgo novo (CBV)-----------------
+class fazerReserva(View):
+    template_name = 'ReserVou/fazer_reserva.html'
+
+    def get(self, request, quarto_id):
+        cliente_id = request.GET.get('cliente_id')
+        checkin = request.GET.get('checkin')
+        checkout = request.GET.get('checkout')
 
         cliente = get_object_or_404(Cliente, id=cliente_id)
         quarto = get_object_or_404(Quarto, id=quarto_id)
@@ -389,36 +426,49 @@ def fazer_pagamento(request):
         dias = (data_out - data_in).days
         total = dias * quarto.preco_diaria
 
-        
-        reserva = Reserva.objects.create(
-            cliente=cliente,
-            hotel=hotel,
-            quarto=quarto,
-            check_in=data_in,
-            check_out=data_out
-        )
-        quarto.status = 'reservado'
-        quarto.save()
-        from .models import Pagamento
-        
-        metodo = tipo_pagamento.lower() if tipo_pagamento else 'pix'
-        if metodo not in ['pix', 'boleto', 'credito', 'debito']:
-            metodo = 'pix'
-        Pagamento.objects.create(
-            reserva=reserva,
-            valor=total,
-            metodo=metodo,
-            status='pago'
-        )
-
-        
-        return render(request, 'ReserVou/confirmacao_pagamento.html', {
-            'reserva': reserva,
-            'tipo_pagamento': tipo_pagamento,
+        context = {
+            'cliente': cliente,
+            'hotel': hotel,
+            'quarto': quarto,
+            'checkin': checkin,
+            'checkout': checkout,
             'total': total,
-        })
-    else:
-        
+        }
+
+        return render(request, self.template_name, context)
+    
+#-----------------Codgo antigo (FBV)----------------
+#def fazer_reserva(request, quarto_id):
+#    cliente_id = request.GET.get('cliente_id')
+#    checkin = request.GET.get('checkin')
+#    checkout = request.GET.get('checkout')
+#
+#    cliente = get_object_or_404(Cliente, id=cliente_id)
+#    quarto = get_object_or_404(Quarto, id=quarto_id)
+#    hotel = quarto.hotel
+#
+#    
+#    data_in = datetime.strptime(checkin, "%Y-%m-%d").date()
+#    data_out = datetime.strptime(checkout, "%Y-%m-%d").date()
+#    dias = (data_out - data_in).days
+#    total = dias * quarto.preco_diaria
+#
+#    context = {
+#        'cliente': cliente,
+#        'hotel': hotel,
+#        'quarto': quarto,
+#        'checkin': checkin,
+#        'checkout': checkout,
+#        'total': total,
+#    }
+#
+#    return render(request, 'ReserVou/fazer_reserva.html', context)
+
+#-----------------Codgo novo (CBV)------------------
+class fazerPagamento(View):
+    template_name = 'ReserVou/fazer_pagamento.html'
+
+    def get(self, request):
         cliente_id = request.GET.get('cliente_id')
         quarto_id = request.GET.get('quarto_id')
         checkin = request.GET.get('checkin')
@@ -444,14 +494,143 @@ def fazer_pagamento(request):
             'metodos_pagamento': Pagamento.METODO_ESCOLHIDO,
         }
 
-        return render(request, 'ReserVou/fazer_pagamento.html', context)
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        cliente_id = request.POST.get('cliente_id')
+        quarto_id = request.POST.get('quarto_id')
+        checkin = request.POST.get('checkin')
+        checkout = request.POST.get('checkout')
+        tipo_pagamento = request.POST.get('tipo_pagamento')
+
+        cliente = get_object_or_404(Cliente, id=cliente_id)
+        quarto = get_object_or_404(Quarto, id=quarto_id)
+        hotel = quarto.hotel
+
+        data_in = datetime.strptime(checkin, "%Y-%m-%d").date()
+        data_out = datetime.strptime(checkout, "%Y-%m-%d").date()
+        dias = (data_out - data_in).days
+        total = dias * quarto.preco_diaria
+
+        
+        reserva = Reserva.objects.create(
+            cliente=cliente,
+            hotel=hotel,
+            quarto=quarto,
+            check_in=data_in,
+            check_out=data_out
+        )
+        quarto.status = 'reservado'
+        quarto.save()
+        
+        from .models import Pagamento
+        
+        metodo = tipo_pagamento.lower() if tipo_pagamento else 'pix'
+        if metodo not in ['pix', 'boleto', 'credito', 'debito']:
+            metodo = 'pix'
+        
+        Pagamento.objects.create(
+            reserva=reserva,
+            valor=total,
+            metodo=metodo,
+            status='pago'
+        )
+
+        
+        return render(request, 'ReserVou/confirmacao_pagamento.html', {
+            'reserva': reserva,
+            'tipo_pagamento': tipo_pagamento,
+            'total': total,
+        })
 
 #-----------------Codgo antigo (FBV)----------------
-def cancelar_reserva(request, reserva_id):
-    reserva = get_object_or_404(Reserva, id=reserva_id)
-    if request.method == 'POST':
+#def fazer_pagamento(request):
+#    if request.method == 'POST':
+#        cliente_id = request.POST.get('cliente_id')
+#        quarto_id = request.POST.get('quarto_id')
+#        checkin = request.POST.get('checkin')
+#        checkout = request.POST.get('checkout')
+#        tipo_pagamento = request.POST.get('tipo_pagamento')
+#
+#        cliente = get_object_or_404(Cliente, id=cliente_id)
+#        quarto = get_object_or_404(Quarto, id=quarto_id)
+#        hotel = quarto.hotel
+#
+#        data_in = datetime.strptime(checkin, "%Y-%m-%d").date()
+#        data_out = datetime.strptime(checkout, "%Y-%m-%d").date()
+#        dias = (data_out - data_in).days
+#        total = dias * quarto.preco_diaria
+#
+#        
+#        reserva = Reserva.objects.create(
+#            cliente=cliente,
+#            hotel=hotel,
+#            quarto=quarto,
+#            check_in=data_in,
+#            check_out=data_out
+#        )
+#        quarto.status = 'reservado'
+#        quarto.save()
+#        from .models import Pagamento
+#        
+#        metodo = tipo_pagamento.lower() if tipo_pagamento else 'pix'
+#        if metodo not in ['pix', 'boleto', 'credito', 'debito']:
+#            metodo = 'pix'
+#        Pagamento.objects.create(
+#            reserva=reserva,
+#            valor=total,
+#            metodo=metodo,
+#            status='pago'
+#        )
+#
+#        
+#        return render(request, 'ReserVou/confirmacao_pagamento.html', {
+#            'reserva': reserva,
+#            'tipo_pagamento': tipo_pagamento,
+#            'total': total,
+#        })
+#    else:
+#        
+#        cliente_id = request.GET.get('cliente_id')
+#        quarto_id = request.GET.get('quarto_id')
+#        checkin = request.GET.get('checkin')
+#        checkout = request.GET.get('checkout')
+#
+#        cliente = get_object_or_404(Cliente, id=cliente_id)
+#        quarto = get_object_or_404(Quarto, id=quarto_id)
+#        hotel = quarto.hotel
+#
+#        data_in = datetime.strptime(checkin, "%Y-%m-%d").date()
+#        data_out = datetime.strptime(checkout, "%Y-%m-%d").date()
+#        dias = (data_out - data_in).days
+#        total = dias * quarto.preco_diaria
+#
+#        from .models import Pagamento
+#        context = {
+#            'cliente': cliente,
+#            'hotel': hotel,
+#            'quarto': quarto,
+#            'checkin': checkin,
+#            'checkout': checkout,
+#            'total': total,
+#            'metodos_pagamento': Pagamento.METODO_ESCOLHIDO,
+#        }
+#
+#        return render(request, 'ReserVou/fazer_pagamento.html', context)
+
+#-----------------Codgo novo (CBV)------------------
+class cancelarReserva(View):
+    template_name = 'ReserVou/cliente/confirmar_cancelar_reserva.html'
+
+    def get(self, request, reserva_id):
+        reserva = get_object_or_404(Reserva, id=reserva_id)
+        return render(request, self.template_name, {'reserva': reserva})
+
+    def post(self, request, reserva_id):
+        reserva = get_object_or_404(Reserva, id=reserva_id)
         reserva.status = 'cancelada'
         reserva.save()
+
         quarto = reserva.quarto
         quarto.status = 'disponível'
         quarto.save()
@@ -460,5 +639,21 @@ def cancelar_reserva(request, reserva_id):
             pagamento = reserva.pagamento
             pagamento.status = 'cancelado'
             pagamento.save()
-        return redirect('perfil_cliente', id=reserva.cliente.id)
-    return render(request, 'ReserVou/cliente/confirmar_cancelar_reserva.html', {'reserva': reserva})
+        
+        return redirect('perfil_cliente', reserva.cliente.id)
+#-----------------Codgo antigo (FBV)----------------
+#def cancelar_reserva(request, reserva_id):
+#    reserva = get_object_or_404(Reserva, id=reserva_id)
+#    if request.method == 'POST':
+#        reserva.status = 'cancelada'
+#        reserva.save()
+#        quarto = reserva.quarto
+#        quarto.status = 'disponível'
+#        quarto.save()
+#        
+#        if hasattr(reserva, 'pagamento'):
+#            pagamento = reserva.pagamento
+#            pagamento.status = 'cancelado'
+#            pagamento.save()
+#        return redirect('perfil_cliente', id=reserva.cliente.id)
+#    return render(request, 'ReserVou/cliente/confirmar_cancelar_reserva.html', {'reserva': reserva})

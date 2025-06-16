@@ -4,41 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gerenciar Hotéis</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/estilo.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-    <!-- Barra de navegação -->
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
+    <nav>
+        <div>
+            <div>
+                <a href="{% url 'home' %}">ReserVou</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{% url 'cadastrar_hotel' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Novo Hotel</a></li>
-                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para página inicial</a></li>
+            <ul>
+                <li><a href="{% url 'cadastrar_hotel' %}">Cadastrar Novo Hotel</a></li>
+                <li><a href="{% url 'home' %}">Voltar para página inicial</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
-
-    <div class="container">
-        <h2 class="text-center">Gerenciar Hotéis</h2>
+    <div>
+        <h2>Gerenciar Hotéis</h2>
         <hr>
-
         {% for hotel in hoteis %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div>
+            <div>
                 <strong>{{ hotel.nome }}</strong>
             </div>
-            <div class="panel-body">
+            <div>
                 <p><strong>Endereço:</strong> {{ hotel.endereco }}</p>
-                <a class="btn btn-primary" href="{% url 'cadastrar_quarto' hotel.id %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Quarto</a>
-
+                <a href="{% url 'cadastrar_quarto' hotel.id %}">Cadastrar Quarto</a>
                 <h4>Quartos cadastrados:</h4>
                 {% if hotel.quarto.all %}
-                <table class="table table-bordered">
+                <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr>
                             <th>Número</th>
@@ -54,24 +51,23 @@
                             <td>{{ quarto.tipo }}</td>
                             <td>R$ {{ quarto.preco_diaria }}</td>
                             <td>
-                                <a href="{% url 'editar_quarto' pk=quarto.id %}" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
-                                <a href="{% url 'deletar_quarto' pk=quarto.id %}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Deletar</a>
+                                <a href="{% url 'editar_quarto' pk=quarto.id %}">Editar</a>
+                                <a href="{% url 'deletar_quarto' pk=quarto.id %}">Deletar</a>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
                 {% else %}
-                <p class="text-muted">Nenhum quarto cadastrado ainda.</p>
+                <p>Nenhum quarto cadastrado ainda.</p>
                 {% endif %}
             </div>
         </div>
         {% empty %}
-        <div class="alert alert-warning">
+        <div>
             Nenhum hotel cadastrado ainda.
         </div>
         {% endfor %}
     </div>
-
 </body>
 </html>

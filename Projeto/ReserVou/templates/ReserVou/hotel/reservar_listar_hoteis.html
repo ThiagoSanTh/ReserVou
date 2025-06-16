@@ -4,49 +4,38 @@
     <meta charset="UTF-8">
     <title>Hotéis Disponíveis</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/estilo.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <!-- Barra de navegação -->
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
+    <nav>
+        <div>
+            <div>
+                <a href="{% url 'home' %}">ReserVou</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
+            <ul>
+                <li><a href="{% url 'gerenciar_hoteis' %}">Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">Cadastrar Cliente</a></li>
             </ul>
         </div>
     </nav>
-
-    <div class="container">
-        <h1 class="page-header">Lista de Hotéis</h1>
-        <div class="row">
+    <div>
+        <h1>Lista de Hotéis</h1>
+        <div>
             {% for hotel in hoteis %}
-                <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><strong>{{ hotel.nome }}</strong></div>
-                        <div class="panel-body">
-                            <p><strong>Endereço:</strong> {{ hotel.endereco }}</p>
-                            <p><strong>Quartos disponíveis:</strong> {{ hotel.qtd_quartos_disponiveis }}</p>
-                            <a href="{% url 'listar_quartos' hotel.id %}?cliente_id={{ cliente_id }}&checkin={{ checkin }}&checkout={{ checkout }}" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-bed"></span> Ver Quartos
-                            </a>
-                        </div>
+                <div>
+                    <div>{{ hotel.nome }}</div>
+                    <div>
+                        <p><strong>Endereço:</strong> {{ hotel.endereco }}</p>
+                        <p><strong>Quartos disponíveis:</strong> {{ hotel.qtd_quartos_disponiveis }}</p>
+                        <a href="{% url 'listar_quartos' hotel.id %}?cliente_id={{ cliente_id }}&checkin={{ checkin }}&checkout={{ checkout }}">Ver Quartos</a>
                     </div>
                 </div>
             {% empty %}
-                <div class="col-md-12">
-                    <p class="text-muted">Nenhum hotel cadastrado ainda.</p>
-                </div>
+                <div>Nenhum hotel cadastrado ainda.</div>
             {% endfor %}
         </div>
-        <a href="{% url 'home' %}" class="btn btn-default">
-            <span class="glyphicon glyphicon-arrow-left"></span> Voltar
-        </a>
+        <a href="{% url 'home' %}">Voltar</a>
     </div>
 </body>
 </html>

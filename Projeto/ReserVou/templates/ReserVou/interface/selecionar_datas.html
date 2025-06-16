@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Selecionar Datas</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+</head>
+<body>
+    <div>
+        <h2>Escolha as datas da sua reserva</h2>
+        {% if erro %}
+            <div>{{ erro }}</div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="cliente_id" value="{{ cliente_id }}">
+            <div>
+                <label for="checkin">Check-in:</label>
+                <input type="date" id="checkin" name="checkin" required>
+            </div>
+            <div>
+                <label for="checkout">Check-out:</label>
+                <input type="date" id="checkout" name="checkout" required>
+            </div>
+            <button type="submit">Procurar Hotéis</button>
+        </form>
+    </div>
+</body>
+</html>

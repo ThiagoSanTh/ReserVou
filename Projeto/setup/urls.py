@@ -52,6 +52,9 @@ urlpatterns = [
     path('selecionar_datas/', selecionarDatas.as_view(), name='selecionar_datas'),
     path('reserva/pagamento/', fazerPagamento.as_view(), name = 'fazer_pagamento'),
     path('reservar_listar_hoteis/', reservarListarHoteis.as_view(), name = 'reservar_listar_hoteis'),
+    path('login_hotel/', views.loginHotel.as_view(), name='login_hotel'),
+    path('login_cliente/', views.loginCliente.as_view(), name='login_cliente'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
 
 
         #cliente
@@ -59,10 +62,6 @@ urlpatterns = [
     path('deletar_cliente/<int:pk>/', deletarCliente.as_view(), name = 'deletar_cliente'),
     path('editar_cliente/<int:pk>/', editarCliente.as_view(), name = 'editar_cliente'),
     path('clientes/<int:pk>/', perfilCliente.as_view(), name = 'perfil_cliente'),
-
-
-
-
 
 
 ]

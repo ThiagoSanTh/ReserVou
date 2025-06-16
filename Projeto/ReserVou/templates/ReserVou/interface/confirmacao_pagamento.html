@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div>
+            <div>
+                <a href="{% url 'home' %}">ReserVou</a>
+            </div>
+            <ul>
+                <li><a href="{% url 'gerenciar_hoteis' %}">Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">Cadastrar Cliente</a></li>
+                <li><a href="{% url 'home' %}">Voltar para página inicial</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div>
+        <h2>Reserva Confirmada!</h2>
+        <div>
+            <div>
+                <p><strong>Cliente:</strong> {{ reserva.cliente.nome }}</p>
+                <p><strong>Hotel:</strong> {{ reserva.hotel.nome }}</p>
+                <p><strong>Quarto:</strong> Número {{ reserva.quarto.numero }}</p>
+                <p><strong>Check-in:</strong> {{ reserva.check_in }}</p>
+                <p><strong>Check-out:</strong> {{ reserva.check_out }}</p>
+                <p><strong>Pagamento via:</strong> {{ tipo_pagamento }}</p>
+                <p><strong>Valor total:</strong> R$ {{ total }}</p>
+            </div>
+        </div>
+        <a href="{% url 'perfil_cliente' reserva.cliente.id %}">Voltar para o histórico do cliente</a>
+    </div>
+</body>
+</html>

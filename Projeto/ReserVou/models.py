@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django import forms
 
    
 class Hotel (models.Model):
-    nome = models.CharField(max_length = 100, null = False, blank = False)
+    nome = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hotel', null=False, blank=False)
     endereco = models.CharField(max_length = 150, null = False, blank = False)
     
     @property
@@ -32,7 +34,7 @@ class Quarto (models.Model):
         return f"Quarto {self.numero} - {self.hotel.nome}"
     
 class Cliente (models.Model):
-    nome = models.CharField(max_length = 100, null = False, blank = False)
+    nome = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cliente', null=False, blank=False)
     email = models.EmailField(unique = True, max_length = 100, null = False, blank = False)
     telefone = models.CharField(max_length = 11, null = False, blank = False)
     

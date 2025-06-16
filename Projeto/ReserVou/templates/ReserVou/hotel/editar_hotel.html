@@ -4,62 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Editar Hotel</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/estilo.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-    <!-- Barra de navegação -->
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
+    <nav>
+        <div>
+            <div>
+                <a href="{% url 'home' %}">ReserVou</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</a></li>
+            <ul>
+                <li><a href="{% url 'home' %}">Voltar</a></li>
             </ul>
         </div>
     </nav>
-
-    <div class="container">
-        <h2 class="text-center">Editar Hotel</h2>
+    <div>
+        <h2>Editar Hotel</h2>
         <hr>
-
         {% if erro %}
-            <div class="alert alert-danger">{{ erro }}</div>
+            <div>{{ erro }}</div>
         {% endif %}
-
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div>
+            <div>
                 <form method="post">
                     {% csrf_token %}
-                    <div class="form-group">
+                    <div>
                         <label for="nome">Nome:</label>
-                        <input type="text" class="form-control" id="nome" name="nome" value="{{ hotel.nome }}" required>
+                        <input type="text" id="nome" name="nome" value="{{ hotel.nome }}" required>
                     </div>
-
-                    <div class="form-group">
+                    <div>
                         <label for="endereco">Endereço:</label>
-                        <input type="text" class="form-control" id="endereco" name="endereco" value="{{ hotel.endereco }}" required>
+                        <input type="text" id="endereco" name="endereco" value="{{ hotel.endereco }}" required>
                     </div>
-
-                    <div class="btn-group btn-group-justified" role="group" aria-label="Ações">
-                        <div class="btn-group" role="group">
-                            <button type="submit" class="btn btn-success">
-                                <span class="glyphicon glyphicon-floppy-disk"></span> Salvar
-                            </button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <a href="{% url 'gerenciar_hoteis' %}" class="btn btn-default">
-                                <span class="glyphicon glyphicon-arrow-left"></span> Voltar
-                            </a>
-                        </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit">Salvar</button>
+                        <a href="{% url 'gerenciar_hoteis' %}">Voltar</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 </body>
 </html>

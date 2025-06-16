@@ -4,85 +4,59 @@
     <meta charset="UTF-8">
     <title>Perfil de {{ cliente.nome }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/estilo.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
+    <nav>
+        <div>
+            <div>
+                <a href="{% url 'home' %}">ReserVou</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
-                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para lista de clientes</a></li>
+            <ul>
+                <li><a href="{% url 'gerenciar_hoteis' %}">Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">Cadastrar Cliente</a></li>
+                <li><a href="{% url 'home' %}">Voltar para lista de clientes</a></li>
             </ul>
         </div>
     </nav>
-
-    <div class="container">
-        <h1 class="page-header">Perfil do Cliente</h1>
-        <div class="panel panel-default">
-            <div class="panel-body">
+    <div>
+        <h1>Perfil do Cliente</h1>
+        <div>
+            <div>
                 <p><strong>Nome:</strong> {{ cliente.nome }}</p>
                 <p><strong>Email:</strong> {{ cliente.email }}</p>
                 <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
             </div>
         </div>
-
         <h2>Histórico de Reservas</h2>
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div>
+            <div>
                 {% if reservas %}
-                <ul class="list-group">
+                <ul>
                     {% for reserva in reservas %}
-                        <li class="list-group-item">
+                        <li>
                             <strong>Hotel:</strong> {{ reserva.hotel.nome }} |
                             <strong>Quarto:</strong> {{ reserva.quarto.numero }} |
                             <strong>Entrada:</strong> {{ reserva.check_in }} |
                             <strong>Saída:</strong> {{ reserva.check_out }} |
                             <strong>Status do pagamento:</strong>
                             {% if reserva.pagamento %}
-                                {% if reserva.pagamento.status == 'pago' %}
-                                    <span class="label label-success">Pago</span>
-                                {% elif reserva.pagamento.status == 'pendente' %}
-                                    <span class="label label-warning">Pendente</span>
-                                {% elif reserva.pagamento.status == 'cancelado' %}
-                                    <span class="label label-danger">Cancelado</span>
-                                {% else %}
-                                    <span class="label label-default">{{ reserva.pagamento.status|capfirst }}</span>
-                                {% endif %}
+                                {{ reserva.pagamento.status|capfirst }}
                             {% else %}
-                                <span class="text-muted">Sem pagamento registrado</span>
-                            {% endif %}
-                            {% if reserva.status != 'cancelada' %}
-                                <a href="{% url 'cancelar_reserva' reserva.id %}" class="btn btn-warning btn-xs pull-right" style="margin-left: 10px;">
-                                    <span class="glyphicon glyphicon-remove"></span> Cancelar Reserva
-                                </a>
-                            {% else %}
-                                <span class="label label-danger pull-right">Cancelada</span>
+                                Sem pagamento registrado
                             {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
                 {% else %}
-                    <p class="text-muted">Este cliente ainda não possui reservas.</p>
+                <p>Nenhuma reserva encontrada.</p>
                 {% endif %}
             </div>
         </div>
-
-        <a href="{% url 'selecionar_datas' %}?cliente_id={{ cliente.id }}" class="btn btn-success" style="margin-left: 5px;">
-            <span class="glyphicon glyphicon-calendar"></span> Fazer nova reserva
-        </a>
-        <a href="{% url 'editar_cliente' pk=cliente.id %}" class="btn btn-primary btn-sm" style="margin-left: 5px;">
-            <span class="glyphicon glyphicon-pencil"></span> Editar Perfil
-        </a>
-        <a href="{% url 'deletar_cliente' pk=cliente.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">
-            <span class="glyphicon glyphicon-trash"></span> Deletar Perfil
-        </a>
+        <a href="{% url 'selecionar_datas' %}?cliente_id={{ cliente.id }}">Fazer nova reserva</a>
+        <a href="{% url 'editar_cliente' pk=cliente.id %}">Editar Cliente</a>
+        <a href="{% url 'deletar_cliente' pk=cliente.id %}">Deletar Cliente</a>
     </div>
 </body>
 </html>

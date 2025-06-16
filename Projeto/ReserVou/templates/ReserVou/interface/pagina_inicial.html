@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+
+</head>
+<body>
+    <nav>
+        <div >
+            <div >
+                <a href="{% url 'home' %}">ReserVou</a>
+            </div>
+            <ul >
+                <li><a href="{% url 'gerenciar_hoteis' %}">Gerenciar Hotéis</a></li>
+                <li><a href="{% url 'cadastrar_cliente' %}">Cadastrar Cliente</a></li>
+                <li><a href="{% url 'login_hotel'%}">Login Hotel</a></li>
+                <li><a href="{% url 'login_cliente' %}">Login Cliente</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div >
+        <h2>Lista de Hotéis</h2>
+        <div >
+            <ul>
+                {% for hotel in hoteis %}
+                    <li>
+                        <strong>{{ hotel.nome }}</strong><br>
+                        Endereço: {{ hotel.endereco }}  <a href="{% url 'editar_hotel' pk=hotel.id %}">Editar Hotel</a>
+                        <a href="{% url 'deletar_hotel' pk=hotel.id %}">Deletar Hotel</a>
+                    </li>
+                {% empty %}
+                    <li>Nenhum hotel cadastrado ainda.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <hr>
+        <h2>Lista de Clientes</h2>
+        <div>
+            <ul>
+                {% for cliente in clientes %}
+                    <li>
+                        <a href="{% url 'perfil_cliente' pk=cliente.id %}">{{ cliente.nome }}</a> - {{ cliente.email }}
+                    </li>
+                {% empty %}
+                    <li>Nenhum cliente cadastrado ainda.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

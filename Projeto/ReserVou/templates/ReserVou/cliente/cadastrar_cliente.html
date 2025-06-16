@@ -4,64 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cadastrar Cliente</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/estilo.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-    
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
+    <nav>
+        <div>
+            <div>
+                <a href="{% url 'home' %}">ReserVou</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para a lista de clientes</a></li>
+            <ul>
+                <li><a href="{% url 'home' %}">Voltar para a lista de clientes</a></li>
             </ul>
         </div>
     </nav>
-
-    <div class="container">
-        <h2 class="text-center">Cadastro de Cliente</h2>
+    <div>
+        <h2>Cadastro de Cliente</h2>
         <hr>
-
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div>
+            <div>
                 <form method="post">
                     {% csrf_token %}
-                    
-                    <div class="form-group">
+                    <div>
                         <label for="nome">Nome:</label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
+                        <input type="text" id="nome" name="nome" required>
                     </div>
-
-                    <div class="form-group">
+                    <div>
                         <label for="email">E-mail:</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" id="email" name="email" required>
                     </div>
-
-                    <div class="form-group">
+                    <div>
                         <label for="telefone">Telefone (Whatsapp):</label>
-                        <input type="text" class="form-control" id="telefone" name="telefone" maxlength="11" required>
+                        <input type="text" id="telefone" name="telefone" maxlength="11" required>
                     </div>
-
-                    <div class="btn-group btn-group-justified" role="group" aria-label="Ações">
-                        <div class="btn-group" role="group">
-                            <button type="submit" class="btn btn-success">
-                                <span class="glyphicon glyphicon-ok"></span> Cadastrar
-                            </button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <a href="{% url 'home' %}" class="btn btn-default">
-                                <span class="glyphicon glyphicon-arrow-left"></span> Voltar
-                            </a>
-                        </div>
+                    <div style="display: flex; justify-content: center; gap: 10px;">
+                        <button type="submit">Cadastrar</button>
+                        <a href="{% url 'home' %}">Voltar</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 </body>
 </html>

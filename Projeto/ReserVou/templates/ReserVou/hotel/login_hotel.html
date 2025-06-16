@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login do Hotel</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+</head>
+<body>
+    <div>
+        <h2>Login do Hotel</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Entrar</button>
+        </form>
+        {% if form.errors %}
+            <p>Usuário ou senha inválidos.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

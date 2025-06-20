@@ -1,10 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-   
+
+class Gerente (models.Model):
+    nome = models.OneToOneField(User, on_delete = models.CASCADE, related_name = 'gerente')
+
 class Hotel (models.Model):
     nome = models.CharField(max_length = 100, null = False, blank = False)
     endereco = models.CharField(max_length = 150, null = False, blank = False)
-    
+    gerente = models.ForeignKey(Gerente, on_delete = models.CASCADE, related_name = 'hotels', null= True, blank = True)
+
     @property
     def qtd_quartos_disponiveis(self):
         return self.quarto.filter(status='disponível').count()

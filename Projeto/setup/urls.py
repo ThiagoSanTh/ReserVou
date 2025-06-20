@@ -17,11 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ReserVou import views
-from ReserVou.views import (paginaInicial, 
+from ReserVou.views import (paginaInicial, selecionarDatas, reservarListarHoteis, listarQuartos, fazerReserva, fazerPagamento, cancelarReserva,
+                            
                             gerenciarHoteis, cadastrarHotel, editarHotel, deletarHotel, 
+                            
                             editarQuarto, deletarQuarto, cadastrarQuarto, 
-                            cadastrarCliente, editarCliente, deletarCliente, perfilCliente,
-                            selecionarDatas, reservarListarHoteis, listarQuartos, fazerReserva, fazerPagamento, cancelarReserva
+                            
+                            cadastrarCliente, editarCliente, deletarCliente, perfilCliente,                                                    
+                           
+                            cadastrarGerente, loginGerente, logoutGerente
                             )
 
 urlpatterns = [
@@ -31,6 +35,10 @@ urlpatterns = [
         #pagina inicial
     path('', paginaInicial.as_view(), name='home'),
 
+        #gerente
+    path('gerente/cadastrar/', cadastrarGerente.as_view(), name='cadastrar_gerente'),
+    path('gerente/login/', loginGerente.as_view(), name='login_gerente'),
+    path('gerente/logout/', logoutGerente.as_view(), name='logout_gerente'),
 
         #hotel
     path('hoteis/', gerenciarHoteis.as_view(), name = 'gerenciar_hoteis'),
@@ -41,7 +49,7 @@ urlpatterns = [
 
         #quarto
     path('hotel/<int:pk>/quartos/', listarQuartos.as_view(), name = 'listar_quartos'),
-    path('hotel/<int:pk>/quarto/cadastrar/', cadastrarQuarto.as_view(), name = 'cadastrar_quarto'),
+    path('hotel/<int:hotel_id>/quarto/cadastrar/', cadastrarQuarto.as_view(), name = 'cadastrar_quarto'),
     path('editar_quarto/<int:pk>/', editarQuarto.as_view(), name = 'editar_quarto'),
     path('deletar_quarto/<int:pk>/', deletarQuarto.as_view(), name = 'deletar_quarto'),
     

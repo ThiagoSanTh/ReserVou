@@ -16,9 +16,7 @@
                 <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'gerenciar_hoteis' %}"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
-                <li><a href="{% url 'cadastrar_cliente' %}"><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Cliente</a></li>
-                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar para lista de clientes</a></li>
+                <li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</a></li>
             </ul>
         </div>
     </nav>
@@ -83,6 +81,7 @@
         <a href="{% url 'deletar_cliente' pk=cliente.id %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">
             <span class="glyphicon glyphicon-trash"></span> Deletar Perfil
         </a>
+
     </div>
 </body>
 </html>

@@ -23,7 +23,7 @@ from ReserVou.views import (paginaInicial, selecionarDatas, reservarListarHoteis
                             
                             editarQuarto, deletarQuarto, cadastrarQuarto, 
                             
-                            cadastrarCliente, editarCliente, deletarCliente, perfilCliente,                                                    
+                            cadastrarCliente, editarCliente, deletarCliente, perfilCliente, loginCliente, logoutCliente,                                         
                            
                             cadastrarGerente, loginGerente, logoutGerente
                             )
@@ -67,6 +67,8 @@ urlpatterns = [
     path('deletar_cliente/<int:pk>/', deletarCliente.as_view(), name = 'deletar_cliente'),
     path('editar_cliente/<int:pk>/', editarCliente.as_view(), name = 'editar_cliente'),
     path('clientes/<int:pk>/', perfilCliente.as_view(), name = 'perfil_cliente'),
+    path('clientes/login/', loginCliente.as_view(), name = 'login_cliente'),
+    path('clientes/logout/', logoutCliente.as_view(), name = 'logout_cliente'),
 
 
 

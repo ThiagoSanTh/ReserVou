@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Gerente</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -12,35 +12,44 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
+                <a class="navbar-brand" href="{% url 'home'%}">ReserVou</a>
             </div>
-            <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
-                    <li class="nav-item"><span class="nav-link">Olá, {{ user.username }}</span></li>
-                    <li class="nav-item">
-                        <form method="post" action="{% url 'logout' %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">Logout</button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li class="nav-item"><a class="btn btn-link nav-link" href="{% url 'login_gerente' %}">Login Gerente</a></li>
-                    <li class="nav-item"><a class="btn btn-link nav-link" href="{% url 'cadastrar_gerente' %}">Cadastrar Gerente</a></li>
-                {% endif %}
-            </ul>
         </div>
     </nav>
-    <div class="container" style="max-width: 400px; margin-top: 60px;">
-        <div class="panel panel-default">
-            <div class="panel-heading text-center" style="background-color: #337ab7; color: #fff;">
-                <h3>Login do Gerente</h3>
-            </div>
-            <div class="panel-body">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
-                </form>
+    <div class="container" style="min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding-top: 60px;">
+        <div class="row w-100" style="justify-content: center;">
+            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4" style="float:none; margin:auto; min-width:340px; max-width:420px;">
+                <div class="panel panel-primary" style="box-shadow: 0 4px 24px rgba(0,0,0,0.12); border-radius: 8px;">
+                    <div class="panel-heading text-center" style="background-color: #222; color: #fff; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                        <h4 style="margin: 10px 0; font-weight: 600; letter-spacing: 1px;">Login Gerente</h4>
+                    </div>
+                    <div class="panel-body" style="padding: 32px 24px; background: #f9f9f9; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+                        <form method="post" autocomplete="off">
+                            {% csrf_token %}
+                            {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <ul style="margin-bottom: 0;">
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            {% for field in form %}
+                                <div class="form-group" style="margin-bottom: 18px;">
+                                    <label for="{{ field.id_for_label }}" style="font-weight: 500;">{{ field.label }}</label>
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-success w-100" style="font-weight: 600; letter-spacing: 1px;">Entrar</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

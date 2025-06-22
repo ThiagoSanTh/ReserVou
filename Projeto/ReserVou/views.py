@@ -9,7 +9,7 @@ from django.views.generic.edit import FormView
 from django.http import HttpResponseForbidden
 
 from .models import Hotel, Quarto, Cliente, Reserva, Gerente
-from .forms import QuartoForm, ClienteForm
+from .forms import QuartoForm, ClienteForm, CustomAuthForm
 from datetime import datetime
 
 
@@ -183,7 +183,7 @@ class fazerPagamento(View):
             status='pago'
         )
 
-        return render(request, 'ReserVou/confirmacao_pagamento.html', {
+        return render(request, 'ReserVou/interface/confirmacao_pagamento.html', {
             'reserva': reserva,
             'tipo_pagamento': tipo_pagamento,
             'total': total,
@@ -226,6 +226,7 @@ class cadastrarGerente(FormView):
     
 class loginGerente(LoginView):
     template_name = 'ReserVou/gerente/login_gerente.html'
+    authentication_form = CustomAuthForm
     redirect_authenticated_user = True
     success_url = reverse_lazy('home')
 
@@ -326,17 +327,37 @@ class deletarQuarto(DeleteView):
 
 
 #----------------Cliente------------------#
-class cadastrarCliente(CreateView):
-    model = Cliente
-    form_class = ClienteForm
+class cadastrarCliente(FormView):
+    form_class = UserCreationForm
     template_name = 'ReserVou/cliente/cadastrar_cliente.html'
     success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        user = form.save()
+        email = self.request.POST.get('email')
+        telefone = self.request.POST.get('telefone')
+        user.email = email
+        user.save()
+        Cliente.objects.create(
+            nome=user,
+            email=email,
+            telefone=telefone
+        )
+        return super().form_valid(form)
+    
+class loginCliente(LoginView):
+    template_name = 'ReserVou/cliente/login_cliente.html'
+    redirect_authenticated_user = True
+    success_url = reverse_lazy('home')
+
+    def get_success_url(self):
+        return reverse_lazy('home')
 
 class editarCliente(UpdateView):
     model = Cliente
     form_class = ClienteForm
     template_name = 'ReserVou/cliente/editar_cliente.html'
-    success_url = reverse_lazy('perfil_cliente')
+    success_url = reverse_lazy('home')
 
 class deletarCliente(DeleteView):
     model = Cliente
@@ -353,4 +374,7 @@ class perfilCliente(DetailView):
         cliente = self.get_object()
         context['reservas'] = Reserva.objects.filter(cliente=cliente).select_related('quarto', 'hotel')
         return context
+    
+class logoutCliente(LogoutView):
+    next_page = reverse_lazy('home')
 

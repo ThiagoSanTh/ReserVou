@@ -37,7 +37,7 @@ class Quarto (models.Model):
         return f"Quarto {self.numero} - {self.hotel.nome}"
     
 class Cliente (models.Model):
-    nome = models.CharField(max_length = 100, null = False, blank = False)
+    nome = models.OneToOneField(User, on_delete = models.CASCADE, related_name = 'cliente')
     email = models.EmailField(unique = True, max_length = 100, null = False, blank = False)
     telefone = models.CharField(max_length = 11, null = False, blank = False)
     

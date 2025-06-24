@@ -9,13 +9,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+
+
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="{% url 'home' %}">ReserVou</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
+
                 {% if user.is_authenticated and user.gerente %}
+
                     <li class="nav-item" style="display: flex; align-items: center;">
                         <span class="navbar-brand" style="margin-right: 8px;">Olá, {{ user.username }} (Gerente)</span>
                         <form method="post" action="{% url 'logout_gerente' %}" style="display:inline; margin:0;">
@@ -23,8 +27,14 @@
                             <button type="submit" style="background:none; border:none; color:#bdbdbd; font-size:16px; padding:0; margin:0; cursor:pointer;">Logout</button>
                         </form>
                     </li>
-                    <li><a href="{% url 'gerenciar_hoteis' %}" class="navbar-custom-text"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                    
+                    <li>
+                        <a href="{% url 'gerenciar_hoteis' %}" class="navbar-custom-text"><span class="glyphicon glyphicon-home"></span> Gerenciar Hotéis</a></li>
+                    <li>
+                        <a href="{% url 'perfil_gerente' pk=user.gerente.id %}" class="navbar-custom-text"><span class="glyphicon glyphicon-user"></span> Meu Perfil</a></li>
+                        
                 {% elif user.is_authenticated and user.cliente %}
+
                     <li class="nav-item" style="display: flex; align-items: center;">
                         <span class="navbar-brand" style="margin-right: 8px;">Olá, {{ user.username }} (Cliente)</span>
                         <form method="post" action="{% url 'logout_cliente' %}" style="display:inline; margin:0;">
@@ -32,9 +42,13 @@
                             <button type="submit" style="background:none; border:none; color:#bdbdbd; font-size:16px; padding:0; margin:0; cursor:pointer;">Logout</button>
                         </form>
                     </li>
-                    <li><a href="{% url 'perfil_cliente' pk=user.cliente.id %}" class="navbar-custom-text"><span class="glyphicon glyphicon-user"></span> Meu Perfil</a></li>
-                    <li><a href="{% url 'selecionar_datas' %}?cliente_id={{ user.cliente.id }}" class="navbar-custom-text"><span class="glyphicon glyphicon-calendar"></span> Fazer Reserva</a></li>
+                    <li>
+                        <a href="{% url 'perfil_cliente' pk=user.cliente.id %}" class="navbar-custom-text"><span class="glyphicon glyphicon-user"></span> Meu Perfil</a></li>
+                    <li>
+                        <a href="{% url 'selecionar_datas' %}?cliente_id={{ user.cliente.id }}" class="navbar-custom-text"><span class="glyphicon glyphicon-calendar"></span> Fazer Reserva</a></li>
+               
                 {% else %}
+
                     <li class="nav-item">
                         <a class="btn btn-link nav-link" href="{% url 'cadastrar_gerente' %}" ><span class="glyphicon glyphicon-plus-sign"></span> Cadastrar Gerente</a>
                     </li>
@@ -51,38 +65,46 @@
             </ul>
         </div>
     </nav>
+
+
     <div class="container">
         <h2>Lista de Hotéis</h2>
         <div class="panel panel-default">
             <div class="panel-body">
                 <ul class="list-group">
+
                     {% for hotel in hoteis %}
+
                         {% if hotel.qtd_quartos_disponiveis > 0 %}
+
                         <li class="list-group-item">
                             <strong>{{ hotel.nome }}</strong><br>
+
                             Endereço: {{ hotel.endereco }}<br>
+                            
                             Quartos disponíveis: {{ hotel.qtd_quartos_disponiveis }}
-                            {% if user.is_authenticated and user.cliente %}
-                                <a href="{% url 'perfil_cliente' pk=user.cliente.id %}" class="btn btn-info btn-sm" style="margin-left:10px;">
-                                    <span class="glyphicon glyphicon-user"></span> Meu Perfil
-                                </a>
-                                <a href="{% url 'selecionar_datas' %}?cliente_id={{ user.cliente.id }}" class="btn btn-success btn-sm" style="margin-left:5px;">
-                                    <span class="glyphicon glyphicon-calendar"></span> Fazer Reserva
-                                </a>
-                            {% endif %}
+                            
                             {% if user.is_authenticated and user.gerente and hotel.gerente and hotel.gerente.nome == user %}
-                                <a href="{% url 'editar_hotel' pk=hotel.id %}" class="btn btn-primary btn-sm" style="margin-left:10px;">
+
+                                <a href="{% url 'editar_hotel' pk=hotel.id %}" class="btn btn-primary btn-sm" style="margin-left:10px;">  
                                     <span class="glyphicon glyphicon-pencil"></span> Editar Hotel
                                 </a>
-                                <a href="{% url 'deletar_hotel' pk=hotel.id %}" class="btn btn-danger btn-sm" style="margin-left:5px;">
+                                
+                                <a href="{% url 'deletar_hotel' pk=hotel.id %}" class="btn btn-danger btn-sm" style="margin-left:5px;">  
                                     <span class="glyphicon glyphicon-trash"></span> Deletar Hotel
                                 </a>
+
                             {% endif %}
                         </li>
+
                         {% endif %}
+
                     {% empty %}
+
                         <li class="list-group-item text-muted">Nenhum hotel cadastrado ainda.</li>
+
                     {% endfor %}
+
                 </ul>
             </div>
         </div>

@@ -25,7 +25,7 @@ from ReserVou.views import (paginaInicial, selecionarDatas, reservarListarHoteis
                             
                             cadastrarCliente, editarCliente, deletarCliente, perfilCliente, loginCliente, logoutCliente,                                         
                            
-                            cadastrarGerente, loginGerente, logoutGerente
+                            cadastrarGerente, loginGerente, logoutGerente, perfilGerente, editarGerente, deletarGerente
                             )
 
 urlpatterns = [
@@ -39,6 +39,9 @@ urlpatterns = [
     path('gerente/cadastrar/', cadastrarGerente.as_view(), name='cadastrar_gerente'),
     path('gerente/login/', loginGerente.as_view(), name='login_gerente'),
     path('gerente/logout/', logoutGerente.as_view(), name='logout_gerente'),
+    path('gerente/perfil/<int:pk>/', perfilGerente.as_view(), name='perfil_gerente'),
+    path('gerente/editar/<int:pk>/', editarGerente.as_view(), name='editar_gerente'),
+    path('gerente/deletar/<int:pk>/', deletarGerente.as_view(), name='deletar_gerente'),
 
         #hotel
     path('hoteis/', gerenciarHoteis.as_view(), name = 'gerenciar_hoteis'),

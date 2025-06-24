@@ -224,6 +224,30 @@ class cadastrarGerente(FormView):
         Gerente.objects.create(nome=user)
         return super().form_valid(form)
     
+class editarGerente(UpdateView):
+    model = Gerente
+    form_class = CustomAuthForm
+    template_name = 'ReserVou/gerente/editar_gerente.html'
+    success_url = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        gerente = self.get_object()
+        if not request.user.is_authenticated or not hasattr(request.user, 'gerente') or gerente != request.user.gerente:
+            return HttpResponseForbidden('Você não tem permissão para editar este gerente.')
+        return super().dispatch(request, *args, **kwargs)
+    
+class deletarGerente(DeleteView):
+    model = Gerente
+    template_name = 'ReserVou/gerente/confirmar_deletar_gerente.html'
+    success_url = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        gerente = self.get_object()
+        if not request.user.is_authenticated or not hasattr(request.user, 'gerente') or gerente != request.user.gerente:
+            return HttpResponseForbidden('Você não tem permissão para deletar este gerente.')
+        return super().dispatch(request, *args, **kwargs)
+
+
 class loginGerente(LoginView):
     template_name = 'ReserVou/gerente/login_gerente.html'
     authentication_form = CustomAuthForm
@@ -235,6 +259,17 @@ class loginGerente(LoginView):
     
 class logoutGerente(LogoutView):
     next_page = reverse_lazy('home')
+
+class perfilGerente(DetailView):
+    model = Gerente
+    template_name = 'ReserVou/gerente/perfil_gerente.html'
+    context_object_name = 'gerente'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        gerente = self.get_object()
+        context['hoteis'] = Hotel.objects.filter(gerente=gerente).prefetch_related('quarto')
+        return context
 
 #----------------Hotel------------------#
 class gerenciarHoteis(ListView):
@@ -251,12 +286,11 @@ class cadastrarHotel(CreateView):
     template_name = 'ReserVou/hotel/cadastrar_hotel.html'
     success_url = reverse_lazy('gerenciar_hoteis')
 
-    
-
     def form_valid(self, form):
         gerente = Gerente.objects.get(nome=self.request.user)
         form.instance.gerente = gerente
         return super().form_valid(form)
+    
 
 class editarHotel(UpdateView):
     model = Hotel
